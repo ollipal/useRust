@@ -1,0 +1,27 @@
+{
+  "name": "userust",
+  "version": "0.0.1",
+  "description": "Use Rust bindgen WASM as a React (or SolidJS) hook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ollipal/useRust.git"
+  },
+  "keywords": [
+    "Rust",
+    "WASM",
+    "React",
+    "SolidJS",
+    "hook",
+    "bindgen"
+  ],
+  "author": "Olli Paloviita",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ollipal/useRust/issues"
+  },
+  "homepage": "https://github.com/ollipal/useRust#readme"
+}
