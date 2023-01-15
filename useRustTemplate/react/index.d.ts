@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-import type {InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
-import * as rustAll from '__REPLACE_NAME_rust'
+import type { InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
+import * as rustAll from "__REPLACE_NAME_rust"
 
+// Get 'rustRest', which does not have default() and initSync()
 const {default: _, initSync: __, ...rustRest} = rustAll;
 
 /**
