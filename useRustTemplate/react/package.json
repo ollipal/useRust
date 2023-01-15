@@ -1,0 +1,16 @@
+{
+  "name": "__REPLACE_NAME",
+  "version": "0.1.0",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "module": "index.js",
+  "types": "index.d.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "__REPLACE_NAME_rust": "file:__REPLACE_PKG_PATH"
+  }
+}

@@ -2,7 +2,10 @@
   "name": "userust",
   "version": "0.0.1",
   "description": "Use Rust bindgen WASM as a React (or SolidJS) hook",
-  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "userust": "bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/ollipal/useRust/issues"
   },
-  "homepage": "https://github.com/ollipal/useRust#readme"
+  "homepage": "https://github.com/ollipal/useRust#readme",
+  "dependencies": {
+    "commander": "^10.0.0",
+    "fs-extra": "^11.1.0"
+  }
 }
