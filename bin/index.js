@@ -5,7 +5,10 @@ import { build } from "./build.js";
 
 program
   .name("userust")
-  .description("Generate WASM based Rust hooks for React and SolidJS")
+  .description(`Generate WASM based Rust hooks for React and SolidJS
+Start bu running 'npx userust init <name>' inside your project
+More info: https://github.com/ollipal/useRust
+`)
   .version(process.env.npm_package_version);
 
 program

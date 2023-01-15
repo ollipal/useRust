@@ -1,0 +1,15 @@
+{
+  "name": "__REPLACE_NAME",
+  "version": "0.1.0",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "module": "index.js",
+  "types": "index.d.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "solid-js": "^1.6.2",
+    "__REPLACE_NAME_rust": "file:__REPLACE_PKG_PATH"
+  }
+}

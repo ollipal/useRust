@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createSignal } from "solid-js";
 import * as rustAll from "__REPLACE_NAME_rust";
 
 // Get 'rustRest', which does not have default() and initSync()
@@ -6,9 +6,9 @@ import * as rustAll from "__REPLACE_NAME_rust";
 const { default: _, initSync: __, ...rustRest } = rustAll;
 
 const useRust = (config = { autoInit: true }) => {
-  const [rust, setRust] = useState(undefined);
-  const [error, setError] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [rust, setRust] = createSignal(undefined);
+  const [error, setError] = createSignal(undefined);
+  const [isLoading, setIsLoading] = createSignal(false);
 
   // eslint-disable-next-line camelcase
   const init = async (module_or_path) => {
@@ -45,9 +45,7 @@ const useRust = (config = { autoInit: true }) => {
     return returnValue;
   };
 
-  useEffect(() => {
-    if (config.autoInit) init();
-  }, []);
+  if (config.autoInit) init();
 
   return { rust, error, isLoading, init, initSync };
 };
