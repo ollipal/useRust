@@ -1,25 +1,25 @@
 #! /usr/bin/env node
-import { program } from 'commander'
-import { init } from "./init.js"
-import { build } from "./build.js"
+import { program } from "commander";
+import { init } from "./init.js";
+import { build } from "./build.js";
 
 program
-  .name('userust')
-  .description('Generate WASM based Rust hooks for React and SolidJS')
+  .name("userust")
+  .description("Generate WASM based Rust hooks for React and SolidJS")
   .version(process.env.npm_package_version);
 
 program
-  .command('init')
-  .description('generate a new useRust hook')
-  .argument('<name>', 'Rust package name')
+  .command("init")
+  .description("generate a new useRust hook")
+  .argument("<name>", "Rust package name")
   //.option('--react', 'Generate a useRust hook for React only')
   //.option('--solidjs', 'Generate a useRust hook for SolidJS only')
-  .action(init)
+  .action(init);
 
 program
-  .command('build')
-  .description('compile existing useRust hook')
-  .argument('<name>', 'Rust package name')
-  .action(build)
+  .command("build")
+  .description("compile existing useRust hook")
+  .argument("<name>", "Rust package name")
+  .action(build);
 
-program.parse()
+program.parse();

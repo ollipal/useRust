@@ -6,42 +6,52 @@ import * as rustAll from "__REPLACE_NAME_rust";
 const { default: _, initSync: __, ...rustRest } = rustAll;
 
 const useRust = (config = { autoInit: true }) => {
-  const [rust, setRust] = useState(undefined);
-  const [error, setError] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [state, setState] = useState({
+    rust: undefined,
+    error: undefined,
+    isLoading: false,
+  });
 
   // eslint-disable-next-line camelcase
   const init = async (module_or_path) => {
-    setIsLoading(true);
+    setState(state => ({...state, isLoading: true}));
     let returnValue;
     try {
       returnValue = await rustAll.default(module_or_path);
     } catch (e) {
-      setRust(undefined);
-      setError(e);
-      setIsLoading(false);
+      setState({
+        rust: undefined,
+        error: e,
+        isLoading: false,
+      });
       return;
     }
-    setRust(rustRest);
-    setError(undefined);
-    setIsLoading(false);
+    setState({
+      rust: rustRest,
+      error: undefined,
+      isLoading: false,
+    });
     return returnValue;
   };
 
   const initSync = (module) => {
-    setIsLoading(true);
+    setState(state => ({...state, isLoading: true}));
     let returnValue;
     try {
       returnValue = rustAll.initSync(module);
     } catch (e) {
-      setRust(undefined);
-      setError(e);
-      setIsLoading(false);
+      setState({
+        rust: undefined,
+        error: e,
+        isLoading: false,
+      });
       return;
     }
-    setRust(rustRest);
-    setError(undefined);
-    setIsLoading(false);
+    setState({
+      rust: rustRest,
+      error: undefined,
+      isLoading: false,
+    });
     return returnValue;
   };
 
@@ -49,7 +59,7 @@ const useRust = (config = { autoInit: true }) => {
     if (config.autoInit) init();
   }, []);
 
-  return { rust, error, isLoading, init, initSync };
+  return { ...state, init, initSync };
 };
 
 export default useRust;
