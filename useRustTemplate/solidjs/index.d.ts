@@ -2,10 +2,7 @@
 /* eslint-disable */
 import type { Accessor } from "solid-js";
 import type { InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
-import * as rustAll from "__REPLACE_NAME_rust"
-
-// Get 'rustRest', which does not have default() and initSync()
-const {default: _, initSync: __, ...rustRest} = rustAll;
+import rustRest from "./typeHelper";
 
 /**
 * Usage: `const { rust, error, isLoading } = useRust()`
@@ -13,12 +10,11 @@ const {default: _, initSync: __, ...rustRest} = rustAll;
 * @see https://github.com/ollipal/useRust
 */
 declare module "aa-test" {
-  function useRust(config?: { autoInit: boolean }): {
-    rust?: Accessor<typeof rustRest>;
+  export default function useRust(config?: { autoInit: boolean }): {
+    rust: Accessor<typeof rustRest | undefined>;
     error: Accessor<any>;
     isLoading: Accessor<boolean>;
     init: (module_or_path?: InitInput | Promise<InitInput>) => Promise<InitOutput> | Promise<undefined>;
     initSync: (module: SyncInitInput) => InitOutput | undefined;
   }
-  export default useRust;
 }

@@ -2,6 +2,7 @@
   "name": "__REPLACE_NAME",
   "version": "0.1.0",
   "files": [
+    "typeHelper.ts",
     "index.js",
     "index.d.ts"
   ],

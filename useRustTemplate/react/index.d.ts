@@ -1,10 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
-import * as rustAll from "__REPLACE_NAME_rust"
-
-// Get 'rustRest', which does not have default() and initSync()
-const {default: _, initSync: __, ...rustRest} = rustAll;
+import rustRest from "./typeHelper";
 
 /**
 * Usage: `const { rust, error, isLoading } = useRust()`
@@ -12,7 +9,7 @@ const {default: _, initSync: __, ...rustRest} = rustAll;
 * @see https://github.com/ollipal/useRust
 */
 export default function useRust(config?: { autoInit: boolean }): {
-  rust?: typeof rustRest;
+  rust: typeof rustRest | undefined;
   error: any;
   isLoading: boolean;
   init: (module_or_path?: InitInput | Promise<InitInput>) => Promise<InitOutput> | Promise<undefined>;
