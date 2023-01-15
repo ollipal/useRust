@@ -48,7 +48,7 @@ export const init = async (name) => {
   const rustSource = `.${path.sep}${path.join(name, "src", "lib.rs")}`
   const installCommand = `npm install .${path.sep}${path.join(name, "react")}`
   const buildCommand = `npx userust build ${name}`
-  console.log(`${chalk.green("Success!")}
+  console.log(`${chalk.green("✓")}
 
 ${chalk.cyan.bold("How to use")}:
 1. Build the Rust package:\t${chalk.bold(buildCommand)}

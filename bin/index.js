@@ -1,10 +1,7 @@
 #! /usr/bin/env node
 import { program } from 'commander'
 import { init } from "./init.js"
-
-const build = (name) => {
-  console.log("hello" + name)
-}
+import { build } from "./build.js"
 
 program
   .name('userust')
