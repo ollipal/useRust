@@ -15,8 +15,8 @@ const {default: _, initSync: __, ...rustRest} = rustAll;
 
 
 const useRust = (config = {autoInit: true}) => {
-  const [rust, setRust] = useState<typeof rustRest | undefined>(undefined);
-  const [error, setError] = useState<any>(undefined);
+  const [rust, setRust] = useState(undefined);
+  const [error, setError] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
   const init = async (module_or_path) => {

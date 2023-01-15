@@ -1,6 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url';
 import fs from 'fs-extra'
+import chalk from 'chalk';
 
 const replaceAll = (text, wordsToReplace) => (
   Object.keys(wordsToReplace).reduce(
@@ -11,16 +12,17 @@ const replaceAll = (text, wordsToReplace) => (
 )
 
 export const init = async (name) => {
+  process.stdout.write(`Generating '${name}' useRust hook... `)
+
   const sourcePath = path.join(fileURLToPath(import.meta.url), "..", "..", "useRustTemplate");
-  const targetPath = path.join(process.env.INIT_CWD, name);
+  const targetPath = path.join(process.cwd(), name);
 
   if (fs.existsSync(targetPath)) {
-    console.log(`Cannot initialize '${name}' because it already exists`)
+    console.log(chalk.red(`Cannot init '${name}' because it already exists`))
     process.exit(1);
   }
 
   // Copy template, and save the copied paths
-  console.log(`Generating useRust hook for a new Rust package '${name}'...`)
   const copiedPaths = []
   const filter = (_, dest) => {
     copiedPaths.push(dest)
@@ -43,6 +45,25 @@ export const init = async (name) => {
     fs.writeFileSync(p, contents);
   }
 
-  const installCommand = `.${path.sep}${path.join(".", name, "react")}`
-  console.log(`...'${name}' generated successfully!\n\nInstall package with:\nnpm install ${installCommand}`)
+  const rustSource = `.${path.sep}${path.join(name, "src", "lib.rs")}`
+  const installCommand = `npm install .${path.sep}${path.join(name, "react")}`
+  const buildCommand = `npx userust build ${name}`
+  console.log(`${chalk.green("Success!")}
+
+${chalk.cyan.bold("How to use")}:
+1. Build the Rust package:\t${chalk.bold(buildCommand)}
+2. Install package with:  \t${chalk.bold(installCommand)}
+3. Use in your components:
+
+${chalk.italic(`import useRust from '${name}'
+//...
+const { rust, error } = useRust()
+console.log(rust?.add(1, 1))`)}
+
+${chalk.cyan.bold("How to modify Rust code:")}:
+1. Modify the source at    \t${chalk.bold(rustSource)}
+2. Rebuild the package with\t${chalk.bold(buildCommand)}
+
+More info at: https://github.com/ollipal/useRust`
+  )
 }

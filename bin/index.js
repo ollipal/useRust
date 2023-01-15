@@ -13,7 +13,7 @@ program
 
 program
   .command('init')
-  .description('Generate a new useRust hook')
+  .description('generate a new useRust hook')
   .argument('<name>', 'Rust package name')
   //.option('--react', 'Generate a useRust hook for React only')
   //.option('--solidjs', 'Generate a useRust hook for SolidJS only')
@@ -21,7 +21,7 @@ program
 
 program
   .command('build')
-  .description('Compile existing useRust hook')
+  .description('compile existing useRust hook')
   .argument('<name>', 'Rust package name')
   .action(build)
 
