@@ -14,7 +14,7 @@ const replaceAll = (text, wordsToReplace) => (
 );
 
 export const init = async (name) => {
-  if (!hasNecessaryDeps()) {
+  if (!(await hasNecessaryDeps())) {
     process.exit(1);
   }
 

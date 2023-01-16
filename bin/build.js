@@ -1,11 +1,11 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { execSync } from "child_process";
+import { spawnSync } from "child_process";
 import { useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 
-export const build = (name) => {
+export const build = async (name) => {
   process.stdout.write(`${useRustTag} Building '${name}'... `);
   const targetPath = path.join(process.cwd(), name, "rust");
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
@@ -19,16 +19,17 @@ export const build = (name) => {
     console.log(`\n${useRustTag} '${name}' found ${chalk.green("✓")}`);
   }
 
-  if (!hasNecessaryDeps()) {
+  if (!(await hasNecessaryDeps())) {
     process.exit(1);
   }
 
   // Build
   const buildCommand = `wasm-pack build --target web .${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...\n`);
-  execSync(
+  spawnSync(
     buildCommand,
-    {stdio: "inherit"}
+    [],
+    { shell: true, stdio: "inherit", stdin: "inherit" }
   );
 
   // Handle .gitignore

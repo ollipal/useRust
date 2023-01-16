@@ -28,7 +28,8 @@
     "chalk": "^5.2.0",
     "command-exists": "^1.2.9",
     "commander": "^10.0.0",
-    "fs-extra": "^11.1.0"
+    "fs-extra": "^11.1.0",
+    "inquirer": "^9.1.4"
   },
   "devDependencies": {
     "eslint": "^8.32.0",
