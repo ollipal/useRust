@@ -9,7 +9,7 @@ import rustRest from "./typeHelper";
 *
 * @see https://github.com/ollipal/useRust
 */
-declare module "aa-test" {
+declare module "__REPLACE_NAME" {
   export default function useRust(config?: { autoInit: boolean }): {
     rust: Accessor<typeof rustRest | undefined>;
     error: Accessor<any>;

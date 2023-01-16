@@ -33,7 +33,7 @@ export const init = async (name) => {
   // Replace words from the copied template
   const wordsToReplace = {
     "__REPLACE_NAME": name,
-    "__REPLACE_PKG_PATH": path.join("..", "pkg")
+    "__REPLACE_PKG_PATH": path.join("..", "rust", "pkg")
   };
   
   for (const p of copiedPaths) {
@@ -51,8 +51,8 @@ export const init = async (name) => {
   console.log(`${chalk.green("✓")}
 
 ${chalk.cyan.bold("How to use")}:
-1. Build the Rust package:\t${chalk.bold(buildCommand)}
-2. Install package with:  \t${chalk.bold(installCommand)}
+1. Install package with:  \t${chalk.bold(installCommand)}
+2. Build the Rust package:\t${chalk.bold(buildCommand)}
 3. Use in your components:
 
 ${chalk.italic(`import useRust from '${name}'

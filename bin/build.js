@@ -32,9 +32,9 @@ const logWasmPackInstallInstructions = () => {
 
 export const build = (name) => {
   process.stdout.write(`${useRustTag} Building '${name}'... `);
-  const targetPath = path.join(process.cwd(), name);
-  const shortGitignorePath = `.${path.sep}${path.join(name, "pkg", ".gitignore")}`;
-  const gitignorePath = path.join(process.cwd(), name, "pkg", ".gitignore");
+  const targetPath = path.join(process.cwd(), name, "rust");
+  const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
+  const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {
@@ -65,7 +65,7 @@ export const build = (name) => {
   }
 
   // Build
-  const buildCommand = `wasm-pack build --target web .${path.sep}${name}`;
+  const buildCommand = `wasm-pack build --target web .${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...\n`);
   execSync(
     buildCommand,
