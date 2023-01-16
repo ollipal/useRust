@@ -14,6 +14,14 @@ const replaceAll = (text, wordsToReplace) => (
 );
 
 export const init = async (name) => {
+  if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
+    console.log(`${useRustTag} package.json missing ${chalk.red("✖")}`);
+    console.log("\n'userust init' should be used inside an existing project");
+    process.exit(1);
+  } else {
+    console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
+  }
+
   if (!(await hasNecessaryDeps())) {
     process.exit(1);
   }
