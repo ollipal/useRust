@@ -15,7 +15,7 @@ const replaceAll = (text, wordsToReplace) => (
 
 export const init = async (name) => {
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
-    console.log(`${useRustTag} package.json missing ${chalk.red("✖")}`);
+    console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust init' should be used inside an existing project");
     process.exit(1);
   } else {
@@ -26,16 +26,17 @@ export const init = async (name) => {
     process.exit(1);
   }
 
-  process.stdout.write(`${useRustTag} Generating '${name}' useRust hook... `);
-
   const commonPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "common");
   const reactPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "react");
   //const solidjsPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "solidjs");
   const targetPath = path.join(process.cwd(), name);
 
   if (fs.existsSync(targetPath)) {
-    console.log(chalk.red(`✖\n\nCannot init '${name}' because it already exists`));
+    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.red("✖")}`);
+    console.log(`\nCannot init because '${targetPath}' already exists`);
     process.exit(1);
+  } else {
+    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
   }
 
   // Copy template, and save the copied paths
@@ -65,8 +66,7 @@ export const init = async (name) => {
   const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
   const installCommand = `npm install .${path.sep}${path.join(name, "react")}`;
   const buildCommand = `npx userust build ${name}`;
-  console.log(`${chalk.green("✓")}
-
+  console.log(`
 ${chalk.cyan.bold("How to use")}:
 1. Install package with:  \t${chalk.bold(installCommand)}
 2. Build the Rust package:\t${chalk.bold(buildCommand)}
