@@ -2,6 +2,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import chalk from "chalk";
+import { hasNecessaryDeps } from "./checkDeps.js";
+import { useRustTag } from "./common.js";
 
 const replaceAll = (text, wordsToReplace) => (
   Object.keys(wordsToReplace).reduce(
@@ -12,13 +14,19 @@ const replaceAll = (text, wordsToReplace) => (
 );
 
 export const init = async (name) => {
-  process.stdout.write(`Generating '${name}' useRust hook... `);
+  if (!hasNecessaryDeps()) {
+    process.exit(1);
+  }
 
-  const sourcePath = path.join(fileURLToPath(import.meta.url), "..", "..", "useRustTemplate");
+  process.stdout.write(`${useRustTag} Generating '${name}' useRust hook... `);
+
+  const commonPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "common");
+  const reactPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "react");
+  //const solidjsPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "solidjs");
   const targetPath = path.join(process.cwd(), name);
 
   if (fs.existsSync(targetPath)) {
-    console.log(chalk.red(`Cannot init '${name}' because it already exists`));
+    console.log(chalk.red(`✖\n\nCannot init '${name}' because it already exists`));
     process.exit(1);
   }
 
@@ -28,14 +36,15 @@ export const init = async (name) => {
     copiedPaths.push(dest);
     return true;
   };
-  await fs.copy(sourcePath, targetPath, { overwrite: false, errorOnExist: true, filter });
+  await fs.copy(commonPath, targetPath, { overwrite: false, errorOnExist: true, filter });
+  await fs.copy(reactPath, targetPath, { overwrite: false, errorOnExist: true, filter });
 
   // Replace words from the copied template
   const wordsToReplace = {
     "__REPLACE_NAME": name,
-    "__REPLACE_PKG_PATH": path.join("..", "rust", "pkg")
+    "__REPLACE_PKG_PATH": `.${path.sep}${path.join("rust", "pkg")}`
   };
-  
+
   for (const p of copiedPaths) {
     if (fs.lstatSync(p).isDirectory()) {
       continue;
@@ -45,7 +54,7 @@ export const init = async (name) => {
     fs.writeFileSync(p, contents);
   }
 
-  const rustSource = `.${path.sep}${path.join(name, "src", "lib.rs")}`;
+  const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
   const installCommand = `npm install .${path.sep}${path.join(name, "react")}`;
   const buildCommand = `npx userust build ${name}`;
   console.log(`${chalk.green("✓")}
