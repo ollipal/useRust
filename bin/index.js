@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 import { program } from "commander";
 import { init } from "./init.js";
-import { build } from "./build.js";
+import { checkDepsAndBuild } from "./build.js";
 
 program
   .name("userust")
@@ -15,14 +15,12 @@ program
   .command("init")
   .description("generate a new useRust hook")
   .argument("<name>", "Rust package name")
-  //.option('--react', 'Generate a useRust hook for React only')
-  //.option('--solidjs', 'Generate a useRust hook for SolidJS only')
   .action(init);
 
 program
   .command("build")
   .description("compile existing useRust hook")
   .argument("<name>", "Rust package name")
-  .action(build);
+  .action(checkDepsAndBuild);
 
 program.parse();

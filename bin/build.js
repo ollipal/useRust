@@ -6,10 +6,28 @@ import { useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 
 export const build = async (name) => {
-  process.stdout.write(`${useRustTag} Building '${name}'... `);
-  const targetPath = path.join(process.cwd(), name, "rust");
+  // Build
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
   const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
+
+  const buildCommand = `wasm-pack build --target web .${path.sep}${path.join(name, "rust")}`;
+  console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
+  spawnSync(
+    buildCommand,
+    [],
+    { shell: true, stdio: "inherit", stdin: "inherit" }
+  );
+
+  // Handle .gitignore
+  console.log(`${useRustTag} Overwriting the default ${shortGitignorePath}`);
+  fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
+
+  // Success
+  console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));
+};
+
+export const checkDepsAndBuild = async (name) => {
+  const targetPath = path.join(process.cwd(), name, "rust");
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {
@@ -19,23 +37,10 @@ export const build = async (name) => {
     console.log(`\n${useRustTag} '${name}' found ${chalk.green("✓")}`);
   }
 
+  // Make sure has rustup and wasm-pack
   if (!(await hasNecessaryDeps())) {
     process.exit(1);
   }
 
-  // Build
-  const buildCommand = `wasm-pack build --target web .${path.sep}${path.join(name, "rust")}`;
-  console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...\n`);
-  spawnSync(
-    buildCommand,
-    [],
-    { shell: true, stdio: "inherit", stdin: "inherit" }
-  );
-
-  // Handle .gitignore
-  console.log(`\n${useRustTag} Overwriting the default ${shortGitignorePath}`);
-  fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
-
-  // Success
-  console.log(`${useRustTag} '${name}' built successfully ${chalk.green("✓")}`);
+  await build(name);
 };
