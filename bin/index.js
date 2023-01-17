@@ -5,22 +5,22 @@ import { checkDepsAndBuild } from "./build.js";
 
 program
   .name("userust")
-  .description(`Generate WASM based Rust hooks for React and SolidJS
-Start bu running 'npx userust init <name>' inside your project
-More info: https://github.com/ollipal/useRust
-`)
+  .description("Generate custom Rust hooks for React and SolidJS projects")
   .version(process.env.npm_package_version);
 
 program
   .command("init")
   .description("generate a new useRust hook")
-  .argument("<name>", "Rust package name")
+  .argument("<name>", "hook package name")
+  .option("--no-typescript", "do not generate d.ts files")
+  .option("--verbose", "log more information")
   .action(init);
 
 program
   .command("build")
   .description("compile existing useRust hook")
-  .argument("<name>", "Rust package name")
+  .argument("<name>", "hook package name")
+  .option("--verbose", "log more information")
   .action(checkDepsAndBuild);
 
 program.parse();

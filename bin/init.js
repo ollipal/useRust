@@ -64,7 +64,7 @@ export const init = async (name) => {
       name: "install",
       message: "Install generated package with",
       type: "list",
-      choices: ["npm", "pnpm", "yarn (v2)", "I'll install manually later"],
+      choices: ["npm", "pnpm", "yarn (v1)", "yarn (v2+)", "I'll install manually later"],
     },
   ]);
 
