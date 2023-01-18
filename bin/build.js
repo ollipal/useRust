@@ -10,7 +10,9 @@ export const build = async (name) => {
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
   const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
 
-  const buildCommand = `wasm-pack build --target web .${path.sep}${path.join(name, "rust")}`;
+  const typeScript = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`)).typeScript;
+
+  const buildCommand = `wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
   spawnSync(
     buildCommand,

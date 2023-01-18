@@ -80,8 +80,8 @@ export const init = async (name, { typescript, verbose, y }) => {
   const answers = y
     ? {
       framework: detectFramework(packageJsonPath),
-      gitignore: "Yes",
-      install: detectPackageManager(),
+      gitignoreCompiled: "Yes",
+      packageManager: detectPackageManager(),
     }
     : await inquirer.prompt([
       {
@@ -92,13 +92,13 @@ export const init = async (name, { typescript, verbose, y }) => {
         default: detectFramework(packageJsonPath),
       },
       {
-        name: "gitignore",
+        name: "gitignoreCompiled",
         message: ".gitignore compiled WASM and bindings?",
         type: "list",
         choices: ["Yes", "No"],
       },
       { // TODO check tool availability first
-        name: "install",
+        name: "packageManager",
         message: "Install generated package with",
         type: "list",
         choices: ["npm", "pnpm", "yarn (v2+)", "I'll install manually later"],
@@ -106,18 +106,25 @@ export const init = async (name, { typescript, verbose, y }) => {
       },
     ]);
 
-  //console.log({...answers, typescript, useRustVersion, y});
-
   const hookPath = answers["framework"] === "React" ? reactPath : solidjsPath;
 
   // Copy template, and save the copied paths
   const copiedPaths = [];
   const filter = (_, dest) => {
+    if (!typescript && dest.endsWith(".ts")) {
+      return false;
+    }
     copiedPaths.push(dest);
     return true;
   };
   await fs.copy(commonPath, targetPath, { overwrite: false, errorOnExist: true, filter });
   await fs.copy(hookPath, targetPath, { overwrite: false, errorOnExist: true, filter });
+
+  const useRustConfig = {useRustVersion, typeScript: typescript, ...answers};
+  if (useRustConfig["packageManager"] == "I'll install manually later") {
+    useRustConfig["packageManager"] = "manual";
+  }
+  fs.writeFileSync(path.join(targetPath, "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template
   const wordsToReplace = {
