@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as rustAll from "__REPLACE_NAME_rust";
+import * as rustAll from "template_name_rust";
 
 // Get 'rustRest', which does not have default() and initSync()
 // eslint-disable-next-line no-unused-vars

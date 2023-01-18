@@ -1,5 +1,5 @@
 {
-  "name": "__REPLACE_NAME",
+  "name": "template_name",
   "version": "0.1.0",
   "files": [
     "typeHelper.ts",
@@ -11,6 +11,6 @@
   "sideEffects": false,
   "dependencies": {
     "solid-js": "^1.6.2",
-    "__REPLACE_NAME_rust": "file:__REPLACE_PKG_PATH"
+    "template_name_rust": "file:template_pkg_path"
   }
 }

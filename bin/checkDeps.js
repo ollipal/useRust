@@ -23,7 +23,7 @@ const tryInstallRustup = async () => {
       spawnSync(
         "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
         [],
-        { shell: true, stdio: "inherit", stdin: "inherit" }
+        { shell: true, stdio: "inherit" }
       );
       return hasRustUp(); // might fail
     }
@@ -43,7 +43,7 @@ const tryInstallWasmPack = async () => {
       spawnSync(
         "curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh",
         [],
-        { shell: true, stdio: "inherit", stdin: "inherit" }
+        { shell: true, stdio: "inherit" }
       );
       return hasWasmPack(); // might fail
     }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Accessor } from "solid-js";
-import type { InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
+import type { InitInput, InitOutput, SyncInitInput } from "template_name_rust"
 import rustRest from "./typeHelper";
 
 /**
@@ -9,7 +9,7 @@ import rustRest from "./typeHelper";
 *
 * @see https://github.com/ollipal/useRust
 */
-declare module "__REPLACE_NAME" {
+declare module "template_name" {
   export default function useRust(config?: { autoInit: boolean }): {
     rust: Accessor<typeof rustRest | undefined>;
     error: Accessor<any>;

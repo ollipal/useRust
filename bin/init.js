@@ -81,8 +81,8 @@ export const init = async (name) => {
 
   // Replace words from the copied template
   const wordsToReplace = {
-    "__REPLACE_NAME": name,
-    "__REPLACE_PKG_PATH": `.${path.sep}${path.join("rust", "pkg")}`
+    "template_name": name,
+    "template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`
   };
 
   for (const p of copiedPaths) {

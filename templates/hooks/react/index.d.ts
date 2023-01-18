@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import type { InitInput, InitOutput, SyncInitInput } from "__REPLACE_NAME_rust"
+import type { InitInput, InitOutput, SyncInitInput } from "template_name_rust"
 import rustRest from "./typeHelper";
 
 /**

@@ -15,7 +15,7 @@ export const build = async (name) => {
   spawnSync(
     buildCommand,
     [],
-    { shell: true, stdio: "inherit", stdin: "inherit" }
+    { shell: true, stdio: "inherit" }
   );
 
   // Handle .gitignore
