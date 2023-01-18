@@ -2,6 +2,7 @@
 import { program } from "commander";
 import { init } from "./init.js";
 import { checkDepsAndBuild } from "./build.js";
+import { uninstall } from "./uninstall.js";
 
 program
   .name("userust")
@@ -22,5 +23,12 @@ program
   .argument("<name>", "hook package name")
   .option("--verbose", "log more information")
   .action(checkDepsAndBuild);
+
+program
+  .command("uninstall")
+  .description("remove installed useRust hook")
+  .argument("<name>", "hook package name")
+  .option("--verbose", "log more information")
+  .action(uninstall);
 
 program.parse();

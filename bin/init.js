@@ -6,6 +6,7 @@ import { hasNecessaryDeps } from "./checkDeps.js";
 import { useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { build } from "./build.js";
+import { spawnSync } from "child_process";
 
 const replaceAll = (text, wordsToReplace) => (
   Object.keys(wordsToReplace).reduce(
@@ -47,12 +48,6 @@ export const init = async (name) => {
       message: "Framework?",
       type: "list",
       choices: ["React", "SolidJS"],
-    },
-    {
-      name: "language",
-      message: "Language?",
-      type: "list",
-      choices: ["TypeScript", "JavaScript"],
     },
     {
       name: "gitignore",
@@ -99,10 +94,17 @@ export const init = async (name) => {
   await build(name);
 
   const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
-  const installCommandNPM = `npm install .${path.sep}${path.join(name, "react")}`;
+  const installCommandNPM = `npm install .${path.sep}${name}`;
   //const installCommandPNPM = `pnpm install .${path.sep}${path.join(name, "react")}`;
   //const installCommandYarn = `yarn add .${path.sep}${path.join(name, "react")}`;
   const buildCommand = `npx userust build ${name}`;
+
+  console.log(`${useRustTag} Executing ${chalk.bold(installCommandNPM)}...`);
+  spawnSync(
+    installCommandNPM,
+    [],
+    { shell: true, stdio: "inherit" }
+  );
 
   console.log(`
 ${chalk.cyan.bold("How to use")}:
