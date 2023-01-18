@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import chalk from "chalk";
 import { hasNecessaryDeps } from "./checkDeps.js";
-import { useRustTag } from "./common.js";
+import { useRustTag, useRustVersion } from "./common.js";
 import inquirer from "inquirer";
 import { build } from "./build.js";
 import { spawnSync } from "child_process";
@@ -49,7 +49,7 @@ const detectPackageManager = () => {
 };
 
 
-export const init = async (name, { typescript, verbose }) => {
+export const init = async (name, { typescript, verbose, y }) => {
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
@@ -77,28 +77,36 @@ export const init = async (name, { typescript, verbose }) => {
     if (verbose) console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
   }
 
-  const answers = await inquirer.prompt([
-    {
-      name: "framework",
-      message: "Framework?",
-      type: "list",
-      choices: ["React", "SolidJS"],
-      default: detectFramework(packageJsonPath),
-    },
-    {
-      name: "gitignore",
-      message: ".gitignore compiled WASM and bindings?",
-      type: "list",
-      choices: ["Yes", "No"],
-    },
-    { // TODO check tool availability first
-      name: "install",
-      message: "Install generated package with",
-      type: "list",
-      choices: ["npm", "pnpm", "yarn (v2+)", "I'll install manually later"],
-      default: detectPackageManager(),
-    },
-  ]);
+  const answers = y
+    ? {
+      framework: detectFramework(packageJsonPath),
+      gitignore: "Yes",
+      install: detectPackageManager(),
+    }
+    : await inquirer.prompt([
+      {
+        name: "framework",
+        message: "Framework?",
+        type: "list",
+        choices: ["React", "SolidJS"],
+        default: detectFramework(packageJsonPath),
+      },
+      {
+        name: "gitignore",
+        message: ".gitignore compiled WASM and bindings?",
+        type: "list",
+        choices: ["Yes", "No"],
+      },
+      { // TODO check tool availability first
+        name: "install",
+        message: "Install generated package with",
+        type: "list",
+        choices: ["npm", "pnpm", "yarn (v2+)", "I'll install manually later"],
+        default: detectPackageManager(),
+      },
+    ]);
+
+  //console.log({...answers, typescript, useRustVersion, y});
 
   const hookPath = answers["framework"] === "React" ? reactPath : solidjsPath;
 

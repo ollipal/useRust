@@ -5,7 +5,7 @@ import { useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { spawnSync } from "child_process";
 
-export const uninstall = async (name, { verbose }) => {
+export const uninstall = async (name, { verbose, y }) => {
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust uninstall' should be used inside an existing project");
@@ -16,12 +16,14 @@ export const uninstall = async (name, { verbose }) => {
 
   const targetPath = path.join(process.cwd(), name);
 
-  const answer = await inquirer.prompt([
-    {
-      name: "uninstall",
-      message: `Uninstall '${name}' and delete EVERYTHING from ${targetPath}?`,
-      type: "confirm",
-    }]);
+  const answer = y
+    ? { uninstall: true }
+    : await inquirer.prompt([
+      {
+        name: "uninstall",
+        message: `Uninstall '${name}' and delete EVERYTHING from ${targetPath}?`,
+        type: "confirm",
+      }]);
   if (!answer["uninstall"]) {
     console.log(`${useRustTag} 'userust uninstall' skipped`);
     process.exit(0);
