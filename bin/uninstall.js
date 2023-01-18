@@ -51,4 +51,6 @@ export const uninstall = async (name) => {
 
   console.log(`${useRustTag} Removing the genererated code`);
   fs.removeSync(targetPath);
+
+  console.log(`\n '${name}' uninstalled and removed successfully (rustup and wasm-pack were not uninstalled)`);
 };

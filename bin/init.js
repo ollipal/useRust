@@ -16,8 +16,43 @@ const replaceAll = (text, wordsToReplace) => (
   )
 );
 
+const detectFramework = (packageJsonPath) => {
+  const packageJsonContent = fs.readFileSync(packageJsonPath, "utf8"); // Should exist, already checked
+  
+  const wordCount = (word) => {
+    return packageJsonContent.split(word).length - 1;
+  };
+  
+  return wordCount("react") > wordCount("solid-js")
+    ? "React"
+    : "SolidJS"
+  ;
+};
+
+const filePath = (filename) => path.join(process.cwd(), filename);
+
+const detectPackageManager = () => {
+  if (fs.existsSync(filePath("package-lock.json"))) {
+    return "npm";
+  }
+
+  if (fs.existsSync(filePath("pnpm-lock.yaml"))) {
+    return "pnpm";
+  }
+
+  if (fs.existsSync(filePath("yarn.lock"))) {
+    return "yarn (v2+)"; // Version not detected
+  }
+
+  // Default
+  return "npm";
+};
+
+
 export const init = async (name) => {
-  if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
+  const packageJsonPath = path.join(process.cwd(), "package.json");
+
+  if (!fs.existsSync(packageJsonPath)) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust init' should be used inside an existing project");
     process.exit(1);
@@ -48,6 +83,7 @@ export const init = async (name) => {
       message: "Framework?",
       type: "list",
       choices: ["React", "SolidJS"],
+      default: detectFramework(packageJsonPath),
     },
     {
       name: "gitignore",
@@ -59,7 +95,8 @@ export const init = async (name) => {
       name: "install",
       message: "Install generated package with",
       type: "list",
-      choices: ["npm", "pnpm", "yarn (v1)", "yarn (v2+)", "I'll install manually later"],
+      choices: ["npm", "pnpm", "yarn (v2+)", "I'll install manually later"],
+      default: detectPackageManager(),
     },
   ]);
 
@@ -84,7 +121,7 @@ export const init = async (name) => {
     if (fs.lstatSync(p).isDirectory()) {
       continue;
     }
-    let contents = fs.readFileSync(p);
+    let contents = fs.readFileSync(p, "utf8");
     contents = replaceAll(contents, wordsToReplace);
     fs.writeFileSync(p, contents);
   }
@@ -106,20 +143,23 @@ export const init = async (name) => {
     { shell: true, stdio: "inherit" }
   );
 
+
+  // TODO show install command if skipped
   console.log(`
 ${chalk.cyan.bold("How to use")}:
-1. Install package with:  \t${chalk.bold(installCommandNPM)}
-2. Build the Rust package:\t${chalk.bold(buildCommand)}
-3. Use in your components:
+import useRust from '${name}'
 
-${chalk.italic(`import useRust from '${name}'
-//...
-const { rust, error } = useRust()
-console.log(rust?.add(1, 1))`)}
+const Calculator = () => {
+  const { rust, error } = useRust()
 
-${chalk.cyan.bold("How to modify Rust code:")}:
-1. Modify the source at    \t${chalk.bold(rustSource)}
-2. Rebuild the package with\t${chalk.bold(buildCommand)}
+  if (error) return <div>failed to load</div>
+  if (!rust) return <div>loading...</div>
+  return <div>1+1={rust.add(1,1)}!</div>
+}
+
+${chalk.cyan.bold("How to modify Rust:")}:
+1. Make changes at       \t${chalk.bold(rustSource)}
+2. Rebuild the hook with \t${chalk.bold(buildCommand)}
 
 More info at: https://github.com/ollipal/useRust`
   );
