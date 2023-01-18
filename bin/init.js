@@ -49,7 +49,7 @@ const detectPackageManager = () => {
 };
 
 
-export const init = async (name) => {
+export const init = async (name, { typescript, verbose }) => {
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
@@ -57,10 +57,10 @@ export const init = async (name) => {
     console.log("\n'userust init' should be used inside an existing project");
     process.exit(1);
   } else {
-    console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
+    if (verbose) console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
   }
 
-  if (!(await hasNecessaryDeps())) {
+  if (!(await hasNecessaryDeps(verbose))) {
     process.exit(1);
   }
 
@@ -74,7 +74,7 @@ export const init = async (name) => {
     console.log(`\nCannot init because '${targetPath}' already exists`);
     process.exit(1);
   } else {
-    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
+    if (verbose) console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
   }
 
   const answers = await inquirer.prompt([
@@ -126,7 +126,7 @@ export const init = async (name) => {
     fs.writeFileSync(p, contents);
   }
 
-  console.log(`${useRustTag} .${path.sep}${name} useRust hook generated ${chalk.green("✓")}`);
+  if (verbose) console.log(`${useRustTag} .${path.sep}${name} useRust hook generated ${chalk.green("✓")}`);
 
   await build(name);
 
@@ -142,6 +142,7 @@ export const init = async (name) => {
     [],
     { shell: true, stdio: "inherit" }
   );
+  console.log(`${useRustTag} .${path.sep}${name} useRust hook initialized succesfully ${chalk.green("✓")}`);
 
 
   // TODO show install command if skipped

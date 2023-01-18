@@ -1,20 +1,17 @@
 import path from "path";
-import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { hasNecessaryDeps } from "./checkDeps.js";
 import { useRustTag } from "./common.js";
 import inquirer from "inquirer";
-import { build } from "./build.js";
 import { spawnSync } from "child_process";
 
-export const uninstall = async (name) => {
+export const uninstall = async (name, { verbose }) => {
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust uninstall' should be used inside an existing project");
     process.exit(1);
   } else {
-    console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
+    if (verbose) console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
   }
 
   const targetPath = path.join(process.cwd(), name);
@@ -26,7 +23,7 @@ export const uninstall = async (name) => {
       type: "confirm",
     }]);
   if (!answer["uninstall"]) {
-    console.log("\n'userust uninstall' skipped");
+    console.log(`${useRustTag} 'userust uninstall' skipped`);
     process.exit(0);
   }
 
@@ -51,6 +48,6 @@ export const uninstall = async (name) => {
 
   console.log(`${useRustTag} Removing the genererated code`);
   fs.removeSync(targetPath);
-
-  console.log(`\n '${name}' uninstalled and removed successfully (rustup and wasm-pack were not uninstalled)`);
+  console.log(`${useRustTag} '${name}' uninstalled and removed successfully ${chalk.green("✓")}`);
+  console.log(`${useRustTag} (rustup and wasm-pack were not uninstalled)`);
 };

@@ -23,7 +23,7 @@ export const build = async (name) => {
   fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
 
   // Success
-  console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));
+  //console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));
 };
 
 export const checkDepsAndBuild = async (name) => {
