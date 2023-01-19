@@ -39,7 +39,8 @@ export const checkDepsAndBuild = async (name: string, { verbose }: { verbose: bo
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {
-    console.log(chalk.red(`✖\n\nCannot build '${name}' because the directory does not exist`));
+    console.log(chalk.red(`Cannot build '${name}' because the directory does not exist`));
+    console.log(`Maybe call 'userust init ${name}' first?`);
     process.exit(1);
   } else {
     console.log(`\n${useRustTag} '${name}' found ${chalk.green("✓")}`);

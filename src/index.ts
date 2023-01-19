@@ -7,7 +7,7 @@ import { useRustVersion } from "./common.js";
 
 program
   .name("userust")
-  .description("Generate custom Rust hooks for React and SolidJS projects")
+  .description("Custom Rust WebAssembly hooks for React and SolidJS projects")
   .version(useRustVersion);
 
 program

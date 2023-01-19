@@ -131,7 +131,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
     : await inquirer.prompt([
       {
         name: "gitignoreCompiled",
-        message: ".gitignore compiled WASM and bindings?",
+        message: ".gitignore compiled Wasm and bindings?",
         type: "list",
         choices: ["Yes", "No"],
       },

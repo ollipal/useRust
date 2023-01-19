@@ -1,32 +1,43 @@
 # useRust
 
+Custom Rust WebAssembly hooks for React and SolidJS projects
 
-```js
-import useRust from 'my-rust-calculator'
-
-const Calculator = () => {
-  const { rust, error } = useRust()
-
-  if (error) return <div>failed to load</div>
-  if (!rust) return <div>loading...</div>
-  return <div>1+1={rust.add(1,1)}!</div>
+```rust
+#[wasm_bindgen]
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
 }
 ```
 
+`$ npx userust build my-rust-code`
+
 ```js
-import useRust from 'my-rust-calculator'
-import { Show } from "solid-js";
+import useRust from 'my-rust-code'
 
 const Calculator = () => {
   const { rust, error } = useRust()
-
-  return (
-    <Show
-      when={rust()}
-      fallback={<div>{error()?"failed to load":"loading..."}</div>}
-    >
-      <div>1+1={rust().add(1,1)}!</div>
-    </Show>
-  );
+  return <div>{"1+1=" + rust?.add(1,1))}</div>
 }
 ```
+
+## How it works
+
+1. Have an existing React, NextJS or SolidJS project
+2. `npx userust init <MY_NAME>` will generate, compile and install a custom Rust hook to your project
+3. `useRust`-hook can now be used in your project
+4. Make changes to `./<MY_NAME>/rust/src`
+5. `npx userust build <MY_NAME>` will recompile the `useRust`-hook
+
+## Features
+
+- Fully typed TypeScript functions, uses wasm-bindgen inside (Works in JavaScript projects as well)
+- Handles the initial code generation and compilation after changes via CLI
+- Generates a minimal custom Rust library, which you can tweak as much as you want
+- Supports npm, pnpm and yarn
+- Blazingly fast Wasm code to speed up critical parts of your frontend
+
+Leverages [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). Simple interface heavily inspired by [SWR](https://swr.vercel.app/) library.
+
+## Licence 
+
+The MIT License.
