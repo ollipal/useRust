@@ -7,6 +7,7 @@ import { useRustTag, useRustVersion } from "./common.js";
 import inquirer from "inquirer";
 import { build } from "./build.js";
 import { spawnSync } from "child_process";
+import { sync } from "command-exists";
 
 const replaceAll = (text, wordsToReplace) => (
   Object.keys(wordsToReplace).reduce(
@@ -16,40 +17,48 @@ const replaceAll = (text, wordsToReplace) => (
   )
 );
 
-const detectFramework = (packageJsonPath) => {
+const detectFramework = (packageJsonPath, verbose) => {
   const packageJsonContent = fs.readFileSync(packageJsonPath, "utf8"); // Should exist, already checked
   
   const wordCount = (word) => {
     return packageJsonContent.split(word).length - 1;
   };
-  
-  return wordCount("react") > wordCount("solid-js")
+
+  const framework = wordCount("react") > wordCount("solid-js")
     ? "React"
     : "SolidJS"
   ;
+
+  if (verbose) console.log(`${useRustTag} ${framework} detected ${chalk.green("✓")}`);
+  return framework;
 };
 
 const filePath = (filename) => path.join(process.cwd(), filename);
 
-const detectPackageManager = () => {
-  if (fs.existsSync(filePath("package-lock.json"))) {
+const detectPackageManager = (verbose) => {
+  if (fs.existsSync(filePath("package-lock.json")) && sync("npm")) {
+    if (verbose) console.log(`${useRustTag} npm detected ${chalk.green("✓")}`);
     return "npm";
   }
 
-  if (fs.existsSync(filePath("pnpm-lock.yaml"))) {
+  if (fs.existsSync(filePath("pnpm-lock.yaml")) && sync("pnpm")) {
+    if (verbose) console.log(`${useRustTag} pnpm detected ${chalk.green("✓")}`);
     return "pnpm";
   }
 
-  if (fs.existsSync(filePath("yarn.lock"))) {
+  if (fs.existsSync(filePath("yarn.lock")) && sync("yarn")) {
+    if (verbose) console.log(`${useRustTag} yarn detected ${chalk.green("✓")}`);
     return "yarn (v2+)"; // Version not detected
   }
 
   // Default
+  if (verbose) console.log(`${useRustTag} defaulting to npm`);
   return "npm";
 };
 
 
 export const init = async (name, { typescript, verbose, y }) => {
+  console.log(`${useRustTag} Analyzing the current directory...`);
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
@@ -77,11 +86,28 @@ export const init = async (name, { typescript, verbose, y }) => {
     if (verbose) console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
   }
 
-  const answers = y
+  const defaultFramework = detectFramework(packageJsonPath, verbose);
+  const defaultPackageManger = detectPackageManager(verbose);
+
+  const { defaults } = y
+    ? { defaults: true }
+    : await inquirer.prompt([
+      {
+        name: "defaults",
+        message: `Initialize a ${chalk.cyan(defaultFramework)} hook and install it with ${chalk.cyan(defaultPackageManger)}?`,
+        type: "confirm",
+      }]);
+
+
+  if (!defaults) {
+    console.log("Choosing the framework and package manager manually...");
+  }
+      
+
+  const frameworkAndPackageManager = defaults
     ? {
-      framework: detectFramework(packageJsonPath),
-      gitignoreCompiled: "Yes",
-      packageManager: detectPackageManager(),
+      framework: defaultFramework,
+      packageManager: defaultPackageManger,
     }
     : await inquirer.prompt([
       {
@@ -89,25 +115,31 @@ export const init = async (name, { typescript, verbose, y }) => {
         message: "Framework?",
         type: "list",
         choices: ["React", "SolidJS"],
-        default: detectFramework(packageJsonPath),
+        default: defaultFramework,
       },
+      { // TODO check tool availability first
+        name: "packageManager",
+        message: "Install generated package with",
+        type: "list",
+        choices: ["npm", "pnpm", "yarn (v2+)"],
+        default: defaultPackageManger,
+      },
+    ]);
+
+  const { gitignoreCompiled } = y
+    ? { gitignoreCompiled: true }
+    : await inquirer.prompt([
       {
         name: "gitignoreCompiled",
         message: ".gitignore compiled WASM and bindings?",
         type: "list",
         choices: ["Yes", "No"],
       },
-      { // TODO check tool availability first
-        name: "packageManager",
-        message: "Install generated package with",
-        type: "list",
-        choices: ["npm", "pnpm", "yarn (v2+)", "I'll install manually later"],
-        default: detectPackageManager(),
-      },
     ]);
 
-  const hookPath = answers["framework"] === "React" ? reactPath : solidjsPath;
+  const hookPath = frameworkAndPackageManager["framework"] === "React" ? reactPath : solidjsPath;
 
+  console.log(`${useRustTag} Initializing .${path.sep}${name}...`);
   // Copy template, and save the copied paths
   const copiedPaths = [];
   const filter = (_, dest) => {
@@ -120,10 +152,7 @@ export const init = async (name, { typescript, verbose, y }) => {
   await fs.copy(commonPath, targetPath, { overwrite: false, errorOnExist: true, filter });
   await fs.copy(hookPath, targetPath, { overwrite: false, errorOnExist: true, filter });
 
-  const useRustConfig = {useRustVersion, typeScript: typescript, ...answers};
-  if (useRustConfig["packageManager"] == "I'll install manually later") {
-    useRustConfig["packageManager"] = "manual";
-  }
+  const useRustConfig = {useRustVersion, typeScript: typescript, ...frameworkAndPackageManager, gitignoreCompiled};
   fs.writeFileSync(path.join(targetPath, "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template
@@ -157,12 +186,12 @@ export const init = async (name, { typescript, verbose, y }) => {
     [],
     { shell: true, stdio: "inherit" }
   );
-  console.log(`${useRustTag} .${path.sep}${name} useRust hook initialized succesfully ${chalk.green("✓")}`);
+  console.log(`${useRustTag} ${name} useRust hook initialized succesfully ${chalk.green("✓")}`);
 
 
   // TODO show install command if skipped
   console.log(`
-${chalk.cyan.bold("How to use")}:
+${chalk.cyan.bold("Component example")}:
 import useRust from '${name}'
 
 const Calculator = () => {
@@ -173,10 +202,12 @@ const Calculator = () => {
   return <div>1+1={rust.add(1,1)}!</div>
 }
 
-${chalk.cyan.bold("How to modify Rust:")}:
-1. Make changes at       \t${chalk.bold(rustSource)}
-2. Rebuild the hook with \t${chalk.bold(buildCommand)}
+${chalk.cyan.bold("How to modify Rust")}:
+1. Make changes at ${chalk.bold(rustSource)}
+2. Rebuild the hook with ${chalk.bold(buildCommand)}
 
-More info at: https://github.com/ollipal/useRust`
+useRust docs: https://github.com/ollipal/useRust
+wasm-bindgen docs: https://rustwasm.github.io/wasm-bindgen/examples/index.html
+`
   );
 };

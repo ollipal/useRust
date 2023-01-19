@@ -48,8 +48,8 @@ export const uninstall = async (name, { verbose, y }) => {
     { shell: true, stdio: "inherit" }
   );
 
-  console.log(`${useRustTag} Removing the genererated code`);
+  console.log(`${useRustTag} Removing everything from .${path.sep}${name}...`);
   fs.removeSync(targetPath);
-  console.log(`${useRustTag} '${name}' uninstalled and removed successfully ${chalk.green("✓")}`);
+  console.log(`${useRustTag} ${name} uninstalled and removed successfully ${chalk.green("✓")}`);
   console.log(`${useRustTag} (rustup and wasm-pack were not uninstalled)`);
 };
