@@ -192,7 +192,8 @@ export const init = async (name, { typescript, verbose, y }) => {
   // TODO show install command if skipped
   console.log(`
 ${chalk.cyan.bold("Component example")}:
-import useRust from '${name}'
+${ frameworkAndPackageManager.framework === "React"
+    ? `import useRust from '${name}'
 
 const Calculator = () => {
   const { rust, error } = useRust()
@@ -200,6 +201,22 @@ const Calculator = () => {
   if (error) return <div>failed to load</div>
   if (!rust) return <div>loading...</div>
   return <div>1+1={rust.add(1,1)}!</div>
+}`
+    : `import useRust from '${name}'
+import { Show } from "solid-js";
+
+const Calculator = () => {
+  const { rust, error } = useRust()
+
+  return (
+    <Show
+      when={rust()}
+      fallback={<div>{error()?"failed to load":"loading..."}</div>}
+    >
+      <div>1+1={rust().add(1,1)}!</div>
+    </Show>
+  );
+}`
 }
 
 ${chalk.cyan.bold("How to modify Rust")}:
