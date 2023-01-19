@@ -5,12 +5,12 @@ import { spawnSync } from "child_process";
 import { useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 
-export const build = async (name) => {
+export const build = async (name: string) => {
   // Build
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
   const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
 
-  const useRustConfig = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`));
+  const useRustConfig = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`, "utf8"));
   const typeScript = useRustConfig.typeScript;
   const gitignoreCompiled = useRustConfig.gitignoreCompiled;
 
@@ -34,7 +34,7 @@ export const build = async (name) => {
   //console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));
 };
 
-export const checkDepsAndBuild = async (name) => {
+export const checkDepsAndBuild = async (name: string, { verbose }: { verbose: boolean}) => {
   const targetPath = path.join(process.cwd(), name, "rust");
 
   // Make sure dir exists
@@ -46,7 +46,7 @@ export const checkDepsAndBuild = async (name) => {
   }
 
   // Make sure has rustup and wasm-pack
-  if (!(await hasNecessaryDeps())) {
+  if (!(await hasNecessaryDeps(verbose))) {
     process.exit(1);
   }
 

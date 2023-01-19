@@ -50,7 +50,7 @@ const tryInstallWasmPack = async () => {
   }
 };
 
-export const hasNecessaryDeps = async (verbose) => {
+export const hasNecessaryDeps = async (verbose: boolean) => {
   if (!hasRustUp() && !(await tryInstallRustup())) {
     console.log(`${useRustTag} rustup detected ${chalk.red("✖")}`);
     console.log(`\nrustup install instructions: ${chalk.bold.cyan("https://rustup.rs")}`);

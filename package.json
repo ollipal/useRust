@@ -6,6 +6,7 @@
   "bin": {
     "userust": "bin/index.js"
   },
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ollipal/useRust.git"
@@ -33,7 +34,19 @@
     "inquirer": "^9.1.4"
   },
   "devDependencies": {
+    "@types/command-exists": "^1.2.0",
+    "@types/fs-extra": "^11.0.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
     "eslint": "^8.32.0",
-    "eslint-plugin-react": "^7.32.0"
-  }
+    "eslint-plugin-react": "^7.32.1",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./dist/index.js"
+  },
+  "files": ["dist/*"]
 }

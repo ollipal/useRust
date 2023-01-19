@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as rustAll from "template_name_rust";
 
 // Get 'rustRest', which does not have default() and initSync()
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { default: _, initSync: __, ...rustRest } = rustAll;
 
 const useRust = (config = { autoInit: true }) => {

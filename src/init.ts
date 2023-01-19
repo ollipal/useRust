@@ -9,7 +9,7 @@ import { build } from "./build.js";
 import { spawnSync } from "child_process";
 import { sync } from "command-exists";
 
-const replaceAll = (text, wordsToReplace) => (
+const replaceAll = (text: string, wordsToReplace: {[key:string]: string}) => (
   Object.keys(wordsToReplace).reduce(
     (f, s) =>
       `${f}`.replace(new RegExp(s, "ig"), wordsToReplace[s]),
@@ -17,10 +17,10 @@ const replaceAll = (text, wordsToReplace) => (
   )
 );
 
-const detectFramework = (packageJsonPath, verbose) => {
+const detectFramework = (packageJsonPath: string, verbose: boolean) => {
   const packageJsonContent = fs.readFileSync(packageJsonPath, "utf8"); // Should exist, already checked
   
-  const wordCount = (word) => {
+  const wordCount = (word: string) => {
     return packageJsonContent.split(word).length - 1;
   };
 
@@ -33,9 +33,9 @@ const detectFramework = (packageJsonPath, verbose) => {
   return framework;
 };
 
-const filePath = (filename) => path.join(process.cwd(), filename);
+const filePath = (filename: string) => path.join(process.cwd(), filename);
 
-const detectPackageManager = (verbose) => {
+const detectPackageManager = (verbose: boolean) => {
   if (fs.existsSync(filePath("package-lock.json")) && sync("npm")) {
     if (verbose) console.log(`${useRustTag} npm detected ${chalk.green("✓")}`);
     return "npm";
@@ -57,7 +57,7 @@ const detectPackageManager = (verbose) => {
 };
 
 
-export const init = async (name, { typescript, verbose, y }) => {
+export const init = async (name: string, { typescript, verbose, y }: {typescript: boolean, verbose: boolean, y: boolean}) => {
   console.log(`${useRustTag} Analyzing the current directory...`);
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
@@ -94,7 +94,7 @@ export const init = async (name, { typescript, verbose, y }) => {
     : await inquirer.prompt([
       {
         name: "defaults",
-        message: `Initialize a ${chalk.cyan(defaultFramework)} hook and install it with ${chalk.cyan(defaultPackageManger)}?`,
+        message: `Initialize a ${chalk.cyan(defaultFramework)} useRust hook and install it with ${chalk.cyan(defaultPackageManger)}?`,
         type: "confirm",
       }]);
 
@@ -141,8 +141,8 @@ export const init = async (name, { typescript, verbose, y }) => {
 
   console.log(`${useRustTag} Initializing .${path.sep}${name}...`);
   // Copy template, and save the copied paths
-  const copiedPaths = [];
-  const filter = (_, dest) => {
+  const copiedPaths: string[] = [];
+  const filter = (_: string, dest: string) => {
     if (!typescript && dest.endsWith(".ts")) {
       return false;
     }
@@ -156,7 +156,7 @@ export const init = async (name, { typescript, verbose, y }) => {
   fs.writeFileSync(path.join(targetPath, "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template
-  const wordsToReplace = {
+  const wordsToReplace : {[key:string]: string} = {
     "template_name": name,
     "template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`
   };

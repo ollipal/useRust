@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-ignore
 import type { InitInput, InitOutput, SyncInitInput } from "template_name_rust"
 import rustRest from "./typeHelper";
 

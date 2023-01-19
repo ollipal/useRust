@@ -5,7 +5,7 @@ import { useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { spawnSync } from "child_process";
 
-export const uninstall = async (name, { verbose, y }) => {
+export const uninstall = async (name: string, { verbose, y }: {verbose: boolean, y: boolean}) => {
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust uninstall' should be used inside an existing project");
