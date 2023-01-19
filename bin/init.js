@@ -152,7 +152,7 @@ export const init = async (name, { typescript, verbose, y }) => {
   await fs.copy(commonPath, targetPath, { overwrite: false, errorOnExist: true, filter });
   await fs.copy(hookPath, targetPath, { overwrite: false, errorOnExist: true, filter });
 
-  const useRustConfig = {useRustVersion, typeScript: typescript, ...frameworkAndPackageManager, gitignoreCompiled};
+  const useRustConfig = {useRustVersion, ...frameworkAndPackageManager, gitignoreCompiled: gitignoreCompiled === "Yes" , typeScript: typescript};
   fs.writeFileSync(path.join(targetPath, "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template

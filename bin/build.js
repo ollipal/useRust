@@ -10,7 +10,9 @@ export const build = async (name) => {
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
   const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
 
-  const typeScript = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`)).typeScript;
+  const useRustConfig = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`));
+  const typeScript = useRustConfig.typeScript;
+  const gitignoreCompiled = useRustConfig.gitignoreCompiled;
 
   const buildCommand = `wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
@@ -21,8 +23,12 @@ export const build = async (name) => {
   );
 
   // Handle .gitignore
-  console.log(`${useRustTag} Overwriting the default ${shortGitignorePath}`);
-  fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
+  if (gitignoreCompiled) {
+    console.log(`${useRustTag} Keeping the default ${shortGitignorePath} with '*'`);
+  } else {
+    console.log(`${useRustTag} Overwriting the default ${shortGitignorePath}`);
+    fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
+  }
 
   // Success
   //console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));
