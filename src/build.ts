@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
 import { spawnSync } from "child_process";
-import { useRustTag } from "./common.js";
+import { useRustConfig, useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 
 export const build = async (name: string) => {
@@ -10,9 +10,7 @@ export const build = async (name: string) => {
   const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
   const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
 
-  const useRustConfig = JSON.parse(fs.readFileSync(`.${path.sep}${path.join(name, "useRustConfig.json")}`, "utf8"));
-  const typeScript = useRustConfig.typeScript;
-  const gitignoreCompiled = useRustConfig.gitignoreCompiled;
+  const { typeScript, gitignoreCompiled } = useRustConfig(name);
 
   const buildCommand = `wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);

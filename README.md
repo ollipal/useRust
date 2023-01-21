@@ -36,6 +36,12 @@ const Calculator = () => {
 
 Leverages [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). Simple interface heavily inspired by [SWR](https://swr.vercel.app/) library.
 
+## Docs
+
+init, build, uninstall
+
+-y, --verbose, --no-typescript, manual delayed init with {autInit: false}
+
 ## Licence 
 
 The MIT License.

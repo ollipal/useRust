@@ -4,6 +4,7 @@ import { init } from "./init.js";
 import { checkDepsAndBuild } from "./build.js";
 import { uninstall } from "./uninstall.js";
 import { useRustVersion } from "./common.js";
+import { watch } from "./watch.js";
 
 program
   .name("userust")
@@ -25,6 +26,14 @@ program
   .argument("<name>", "hook package name")
   .option("--verbose", "log more information")
   .action(checkDepsAndBuild);
+
+program
+  .command("watch")
+  .description("compile hook after every code change")
+  .argument("<name>", "hook package name")
+  .option("--clear", "clear the screen before each build")
+  .option("--verbose", "log more information")
+  .action(watch);
 
 program
   .command("uninstall")
