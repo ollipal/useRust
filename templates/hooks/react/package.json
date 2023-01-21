@@ -12,6 +12,6 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "template_name_rust": "file:template_pkg_path"
+    "template_name_rust": "template_path_prefix:template_pkg_path"
   }
 }

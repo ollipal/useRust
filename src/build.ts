@@ -24,8 +24,8 @@ export const build = async (name: string) => {
   if (gitignoreCompiled) {
     console.log(`${useRustTag} Keeping the default ${shortGitignorePath} with '*'`);
   } else {
-    console.log(`${useRustTag} Overwriting the default ${shortGitignorePath}`);
-    fs.writeFileSync(gitignorePath, "package-lock.json\nnode_modules/");
+    console.log(`${useRustTag} Overwriting the default ${shortGitignorePath} from '*' to 'node_modules/'`);
+    fs.writeFileSync(gitignorePath, "node_modules/");
   }
 
   // Success

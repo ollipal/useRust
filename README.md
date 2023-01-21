@@ -31,8 +31,9 @@ const Calculator = () => {
 - Blazingly fast Wasm code to speed up critical parts of your frontend
 - Fully typed TypeScript functions, uses wasm-bindgen inside (Works in JavaScript projects as well)
 - Handles the initial code generation and compilation after changes via CLI
-- Generates a minimal custom Rust library, which you can tweak as much as you want
+- The generated Rust code can be freely tweaked
 - Supports npm, pnpm and yarn
+- `npx userust watch <MY_NAME>` can be used to automatically compile after each code change
 
 Leverages [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). Simple interface heavily inspired by [SWR](https://swr.vercel.app/) library.
 

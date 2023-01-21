@@ -158,7 +158,8 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   // Replace words from the copied template
   const wordsToReplace : {[key:string]: string} = {
     "template_name": name,
-    "template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`
+    "template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`,
+    "template_path_prefix": frameworkAndPackageManager.packageManager === "npm" ? "file" : "link",
   };
 
   for (const p of copiedPaths) {
@@ -175,14 +176,28 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   await build(name);
 
   const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
-  const installCommandNPM = `npm install .${path.sep}${name}`;
-  //const installCommandPNPM = `pnpm install .${path.sep}${path.join(name, "react")}`;
-  //const installCommandYarn = `yarn add .${path.sep}${path.join(name, "react")}`;
+
+  const installCommands : {[key:string]: string} = {
+    "npm": `npm install .${path.sep}${name}`,
+    "pnpm": `pnpm add .${path.sep}${name}`,
+    "yarn": `yarn add portal:.${path.sep}${name}`,
+  };
+
+  const installCommand = installCommands[frameworkAndPackageManager.packageManager];
   const buildCommand = `npx userust build ${name}`;
 
-  console.log(`${useRustTag} Executing ${chalk.bold(installCommandNPM)}...`);
+  if (frameworkAndPackageManager.packageManager === "pnpm") {
+    console.log(`${useRustTag} Executing ${chalk.bold("pnpm install")} at .${path.sep}${name} ...`);
+    spawnSync(
+      "pnpm install",
+      [],
+      { cwd: targetPath, shell: true, stdio: "inherit" }
+    );
+  }
+
+  console.log(`${useRustTag} Executing ${chalk.bold(installCommand)}...`);
   spawnSync(
-    installCommandNPM,
+    installCommand,
     [],
     { shell: true, stdio: "inherit" }
   );
