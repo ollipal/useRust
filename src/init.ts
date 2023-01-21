@@ -35,6 +35,20 @@ const detectFramework = (packageJsonPath: string, verbose: boolean) => {
 
 const filePath = (filename: string) => path.join(process.cwd(), filename);
 
+const yarnOverV2 = () => {
+  const ver = spawnSync(
+    "yarn --version",
+    [],
+    { shell: true, encoding: "utf-8" }
+  ).stdout;
+  const over = Number(ver.split(".")[0]) > 1;
+  if (!over) {
+    console.log(`${useRustTag} yarn version needs to be over 2 (version ${ver.trim()} detected)`);
+    console.log(`${useRustTag} Migration guide: https://yarnpkg.com/getting-started/migration`);
+  }
+  return over;
+};
+
 const detectPackageManager = (verbose: boolean) => {
   if (fs.existsSync(filePath("package-lock.json")) && sync("npm")) {
     if (verbose) console.log(`${useRustTag} npm detected ${chalk.green("✓")}`);
@@ -48,7 +62,11 @@ const detectPackageManager = (verbose: boolean) => {
 
   if (fs.existsSync(filePath("yarn.lock")) && sync("yarn")) {
     if (verbose) console.log(`${useRustTag} yarn detected ${chalk.green("✓")}`);
-    return "yarn (v2+)"; // Version not detected
+    
+    if (!yarnOverV2()) {
+      return undefined;
+    }
+    return "yarn"; // Version not detected
   }
 
   // Default
@@ -89,6 +107,10 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const defaultFramework = detectFramework(packageJsonPath, verbose);
   const defaultPackageManger = detectPackageManager(verbose);
 
+  if (defaultPackageManger === undefined) {
+    process.exit(1);
+  }
+
   const { defaults } = y
     ? { defaults: true }
     : await inquirer.prompt([
@@ -121,7 +143,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
         name: "packageManager",
         message: "Install generated package with",
         type: "list",
-        choices: ["npm", "pnpm", "yarn (v2+)"],
+        choices: ["npm", "pnpm", "yarn"],
         default: defaultPackageManger,
       },
     ]);
@@ -180,7 +202,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const installCommands : {[key:string]: string} = {
     "npm": `npm install .${path.sep}${name}`,
     "pnpm": `pnpm add .${path.sep}${name}`,
-    "yarn": `yarn add portal:.${path.sep}${name}`,
+    "yarn": `yarn add ${name}@portal:.${path.sep}${name}`,
   };
 
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];
