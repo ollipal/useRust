@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { useRustTag } from "./common.js";
+import { useRustConfig, useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { spawnSync } from "child_process";
 
@@ -29,21 +29,17 @@ export const uninstall = async (name: string, { verbose, y }: {verbose: boolean,
     process.exit(0);
   }
 
-  /* if (!fs.existsSync(targetPath)) {
-    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.red("✖")}`);
-    console.log(`\nCannot init because '${targetPath}' already exists`);
-    process.exit(1);
-  } else {
-    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);
-  } */
+  const uninstallCommands : {[key:string]: string} = {
+    "npm": `npm uninstall ${name}`,
+    "pnpm": `pnpm uninstall ${name}`,
+    "yarn": `yarn remove ${name}`,
+  };
 
-  // TODO read the install command from the repo
+  const uninstallCommand = uninstallCommands[useRustConfig(name).packageManager];
 
-  const uninstallCommandNPM = `npm uninstall .${path.sep}${name}`;
-
-  console.log(`${useRustTag} Executing ${chalk.bold(uninstallCommandNPM)}...`);
+  console.log(`${useRustTag} Executing ${chalk.bold(uninstallCommand)}...`);
   spawnSync(
-    uninstallCommandNPM,
+    uninstallCommand,
     [],
     { shell: true, stdio: "inherit" }
   );

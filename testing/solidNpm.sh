@@ -11,3 +11,5 @@ cp ../components/solidCounter.tsx ./src/components/Counter.tsx
 node ../../dist/index.js init my-rust -y
 echo "node ../dist/index.js watch my-rust"
 npm run dev
+#
+cd current-test && node ../../dist/index.js uninstall my-rust && cat package.json
