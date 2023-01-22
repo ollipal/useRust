@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import chalk from "chalk";
 import { hasNecessaryDeps } from "./checkDeps.js";
-import { useRustTag, useRustVersion } from "./common.js";
+import { toSafe, useRustTag, useRustVersion } from "./common.js";
 import inquirer from "inquirer";
 import { build } from "./build.js";
 import { spawnSync } from "child_process";
@@ -76,6 +76,7 @@ const detectPackageManager = (verbose: boolean) => {
 
 
 export const init = async (name: string, { typescript, verbose, y }: {typescript: boolean, verbose: boolean, y: boolean}) => {
+  name = toSafe(name);
   console.log(`${useRustTag} Analyzing the current directory...`);
   const packageJsonPath = path.join(process.cwd(), "package.json");
 

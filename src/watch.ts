@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { useRustConfig, useRustTag } from "./common.js";
+import { toSafe, useRustConfig, useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 import { spawnSync } from "child_process";
 import { sync } from "command-exists";
@@ -40,6 +40,7 @@ export const checkCargoWatch = async (verbose: boolean) => {
 };
 
 export const watch = async (name: string, { verbose, clear }: { verbose: boolean, clear: boolean}) => {
+  name = toSafe(name);
   const targetPath = path.join(process.cwd(), name, "rust");
 
   // Make sure dir exists

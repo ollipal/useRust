@@ -1,11 +1,12 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { useRustConfig, useRustTag } from "./common.js";
+import { toSafe, useRustConfig, useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { spawnSync } from "child_process";
 
 export const uninstall = async (name: string, { verbose, y }: {verbose: boolean, y: boolean}) => {
+  name = toSafe(name);
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
     console.log("\n'userust uninstall' should be used inside an existing project");

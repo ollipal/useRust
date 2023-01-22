@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
 import { spawnSync } from "child_process";
-import { useRustConfig, useRustTag } from "./common.js";
+import { toSafe, useRustConfig, useRustTag } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 
 export const build = async (name: string) => {
@@ -33,6 +33,7 @@ export const build = async (name: string) => {
 };
 
 export const checkDepsAndBuild = async (name: string, { verbose }: { verbose: boolean}) => {
+  name = toSafe(name);
   const targetPath = path.join(process.cwd(), name, "rust");
 
   // Make sure dir exists

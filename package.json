@@ -1,6 +1,6 @@
 {
   "name": "userust",
-  "version": "0.0.3",
+  "version": "0.0.14",
   "description": "Custom Rust WebAssembly hooks for React and SolidJS projects",
   "type": "module",
   "bin": "dist/index.js",
@@ -45,9 +45,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node ./dist/index.js",
-    "publish": "npm run build && npm version patch && npm publish"
+    "pub": "npm run build && npm version patch --no-git-tag-version && npm publish"
   },
   "files": [
-    "dist/*"
+    "dist/*",
+    "templates/*"
   ]
 }
