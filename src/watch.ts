@@ -39,7 +39,7 @@ export const checkCargoWatch = async (verbose: boolean) => {
   }
 };
 
-export const watch = async (name: string, { verbose, clear }: { verbose: boolean, clear: boolean}) => {
+export const watch = async (name: string, { verbose, clear, gitignore }: { verbose: boolean, clear: boolean, gitignore: boolean}) => {
   name = toSafe(name);
   const targetPath = path.join(process.cwd(), name, "rust");
 
@@ -58,7 +58,7 @@ export const watch = async (name: string, { verbose, clear }: { verbose: boolean
   }
 
   const typeScript = useRustConfig(name).typeScript;
-  const watchCommand = `cargo watch ${clear ? "--clear" : ""} --ignore pkg --shell 'wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.'`;
+  const watchCommand = `cargo watch ${clear ? "--clear" : ""} ${gitignore ? "" : "--no-gitignore"} --ignore pkg --shell 'wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.'`;
 
   console.log(`\n${useRustTag} Executing ${chalk.bold(watchCommand)}`);
   spawnSync(

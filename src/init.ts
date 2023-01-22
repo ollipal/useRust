@@ -208,6 +208,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
 
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];
   const buildCommand = `npx userust build ${name}`;
+  const watchCommand = `npx userust watch ${name}`;
 
   if (frameworkAndPackageManager.packageManager === "pnpm") {
     console.log(`${useRustTag} Executing ${chalk.bold("pnpm install")} at .${path.sep}${name} ...`);
@@ -260,6 +261,8 @@ const Calculator = () => {
 ${chalk.cyan.bold("How to modify Rust")}:
 1. Make changes at ${chalk.bold(rustSource)}
 2. Rebuild the hook with ${chalk.bold(buildCommand)}
+
+Alternatively use ${chalk.bold(watchCommand)} to automatically recompile after Rust changes
 
 useRust docs: https://github.com/ollipal/useRust
 wasm-bindgen docs: https://rustwasm.github.io/wasm-bindgen/examples/index.html
