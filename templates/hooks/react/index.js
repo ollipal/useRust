@@ -8,7 +8,7 @@ const { default: _, initSync: __, ...rustRest } = rustAll;
 const useRust = (config = { autoInit: true }) => {
   const [rust, setRust] = useState(undefined);
   const [error, setError] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(config.autoInit);
 
   // eslint-disable-next-line camelcase
   const init = async (module_or_path) => {

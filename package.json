@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "Custom Rust WebAssembly hooks for React and SolidJS projects",
   "type": "module",
-  "bin": "bin/index.js",
+  "bin": "dist/index.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
