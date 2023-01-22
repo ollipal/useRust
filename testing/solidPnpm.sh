@@ -4,11 +4,11 @@
 set -e
 
 rm -rf ./current-test
-npm init solid@latest current-test
+pnpm create solid current-test
 cd current-test
-npm install
+pnpm install
 cp ../components/solidCounter.tsx ./src/components/Counter.tsx
-node ../../dist/index.js init my-rust -y
+node ../../dist/index.js init my-rust
 echo "node ../dist/index.js watch my-rust"
-npm run dev
+pnpm run dev
 echo ./solidUninstall.sh
