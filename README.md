@@ -32,7 +32,7 @@ Uses [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/) to compile WebAsse
 
 ## Features
 
-- Extremely fast Wasm code to speed up critical parts of your frontend
+- Leverage Rust and Wasm to speed up critical parts of your frontend
 - Fully typed TypeScript interface, works in JavaScript projects as well
 - Generate and compile Rust via CLI, the Rust code can be freely tweaked
 - npm, pnpm and yarn supported
