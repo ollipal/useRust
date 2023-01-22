@@ -15,7 +15,6 @@ declare module "template_name" {
     rust: Accessor<typeof rustRest | undefined>;
     error: Accessor<any>;
     isLoading: Accessor<boolean>;
-    init: (module_or_path?: InitInput | Promise<InitInput>) => Promise<InitOutput> | Promise<undefined>;
-    initSync: (module: SyncInitInput) => InitOutput | undefined;
+    init: () => Promise<InitOutput> | Promise<undefined>;
   }
 }

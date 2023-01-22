@@ -13,6 +13,5 @@ export default function useRust(config?: { autoInit: boolean }): {
   rust: typeof rustRest | undefined;
   error: any;
   isLoading: boolean;
-  init: (module_or_path?: InitInput | Promise<InitInput>) => Promise<InitOutput> | Promise<undefined>;
-  initSync: (module: SyncInitInput) => InitOutput | undefined;
+  init: () => Promise<InitOutput> | Promise<undefined>;
 }

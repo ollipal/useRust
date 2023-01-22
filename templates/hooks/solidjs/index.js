@@ -11,28 +11,11 @@ const useRust = (config = { autoInit: true }) => {
   const [isLoading, setIsLoading] = createSignal(config.autoInit);
 
   // eslint-disable-next-line camelcase
-  const init = async (module_or_path) => {
+  const init = async () => {
     setIsLoading(true);
     let returnValue;
     try {
-      returnValue = await rustAll.default(module_or_path);
-    } catch (e) {
-      setRust(undefined);
-      setError(e);
-      setIsLoading(false);
-      return;
-    }
-    setRust(rustRest);
-    setError(undefined);
-    setIsLoading(false);
-    return returnValue;
-  };
-
-  const initSync = (module) => {
-    setIsLoading(true);
-    let returnValue;
-    try {
-      returnValue = rustAll.initSync(module);
+      returnValue = await rustAll.default();
     } catch (e) {
       setRust(undefined);
       setError(e);
@@ -47,7 +30,7 @@ const useRust = (config = { autoInit: true }) => {
 
   if (config.autoInit) init();
 
-  return { rust, error, isLoading, init, initSync };
+  return { rust, error, isLoading, init };
 };
 
 export default useRust;
