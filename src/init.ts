@@ -237,7 +237,7 @@ const Calculator = () => {
 
   if (error) return <div>failed to load</div>
   if (!rust) return <div>loading...</div>
-  return <div>1+1={rust.add(1,1)}!</div>
+  return <div>1+1={rust.add(1,1)}</div>
 }`
     : `import useRust from '${name}'
 import { Show } from "solid-js";
@@ -250,7 +250,7 @@ const Calculator = () => {
       when={rust()}
       fallback={<div>{error()?"failed to load":"loading..."}</div>}
     >
-      <div>1+1={rust().add(1,1)}!</div>
+      <div>1+1={rust().add(1,1)}</div>
     </Show>
   );
 }`
