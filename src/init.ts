@@ -43,7 +43,7 @@ const yarnOverV2 = () => {
   ).stdout;
   const over = Number(ver.split(".")[0]) > 1;
   if (!over) {
-    console.log(`${useRustTag} yarn version needs to be over 2 (version ${ver.trim()} detected)`);
+    console.log(`${useRustTag} ${chalk.red(`yarn version needs to be over 2 (version ${ver.trim()} detected)`)}`);
     console.log(`${useRustTag} Migration guide: https://yarnpkg.com/getting-started/migration`);
   }
   return over;
@@ -81,8 +81,8 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
-    console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
-    console.log("\n'userust init' should be used inside an existing project");
+    console.log(`${useRustTag} package.json not detected ${chalk.red("✖")}`);
+    console.log(`${chalk.red("\n'userust init' should be used inside an existing project")}`);
     process.exit(1);
   } else {
     if (verbose) console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
@@ -98,8 +98,8 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const targetPath = path.join(process.cwd(), name);
 
   if (fs.existsSync(targetPath)) {
-    console.log(`${useRustTag} .${path.sep}${name} available ${chalk.red("✖")}`);
-    console.log(`\nCannot init because '${targetPath}' already exists`);
+    console.log(`${useRustTag} .${path.sep}${name} not available ${chalk.red("✖")}`);
+    console.log(`${chalk.red(`\nCannot init because '${targetPath}' already exists`)}`);
     process.exit(1);
   } else {
     if (verbose) console.log(`${useRustTag} .${path.sep}${name} available ${chalk.green("✓")}`);

@@ -12,7 +12,7 @@ export const build = async (name: string) => {
 
   const { typeScript, gitignoreCompiled } = useRustConfig(name);
 
-  const buildCommand = `wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.${path.sep}${path.join(name, "rust")}`;
+  const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} .${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
   spawnSync(
     buildCommand,

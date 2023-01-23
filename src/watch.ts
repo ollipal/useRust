@@ -30,7 +30,7 @@ const tryInstallCargoWatch = async () => {
 
 export const checkCargoWatch = async (verbose: boolean) => {
   if (!hasCargoWatch() && !(await tryInstallCargoWatch())) {
-    console.log(`${useRustTag} cargo-watch not detected ${chalk.red("✖")}`);
+    console.log(`${useRustTag} ${chalk.red("cargo-watch not detected ✖")}`);
     console.log(`\ncargo-watch install instructions: ${chalk.bold.cyan("https://github.com/watchexec/cargo-watch")}`);
     return false;
   } else {
@@ -49,7 +49,7 @@ export const watch = async (name: string, { verbose, clear, gitignore }: { verbo
     console.log(`Maybe call 'userust init ${name}' first?`);
     process.exit(1);
   } else {
-    if (verbose) console.log(`\n${useRustTag} '${name}' found ${chalk.green("✓")}`);
+    if (verbose) console.log(`${useRustTag} '${name}' found ${chalk.green("✓")}`);
   }
 
   // Make sure has rustup and wasm-pack
@@ -60,7 +60,7 @@ export const watch = async (name: string, { verbose, clear, gitignore }: { verbo
   const typeScript = useRustConfig(name).typeScript;
   const watchCommand = `cargo watch ${clear ? "--clear" : ""} ${gitignore ? "" : "--no-gitignore"} --ignore pkg --shell 'wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.'`;
 
-  console.log(`\n${useRustTag} Executing ${chalk.bold(watchCommand)}`);
+  console.log(`${useRustTag} Executing ${chalk.bold(watchCommand)}`);
   spawnSync(
     watchCommand,
     [],

@@ -8,7 +8,7 @@ npm create vite@latest current-test
 cd current-test
 npm install
 cp ../components/reactApp.tsx ./src/App.tsx
-node ../../dist/index.js init my-rust -y
+node ../../dist/index.js init my-rust -y --verbose
 npm run dev
 #
 cat package.json
