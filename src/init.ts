@@ -240,7 +240,9 @@ const Calculator = () => {
   if (error) return <div>failed to load</div>
   if (!rust) return <div>loading...</div>
   return <div>1+1={rust.add(1,1)}</div>
-}`
+}
+
+export default Calculator`
     : `import useRust from '${name}'
 import { Show } from "solid-js";
 
@@ -255,7 +257,9 @@ const Calculator = () => {
       <div>1+1={rust().add(1,1)}</div>
     </Show>
   );
-}`
+}
+
+export default Calculator`
 }
 
 ${chalk.cyan.bold("How to modify Rust")}:
@@ -264,8 +268,8 @@ ${chalk.cyan.bold("How to modify Rust")}:
 
 Alternatively use ${chalk.bold(watchCommand)} to automatically recompile after Rust changes
 
-useRust docs: https://github.com/ollipal/useRust
-wasm-bindgen docs: https://rustwasm.github.io/wasm-bindgen/examples/index.html
+${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
+${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
 `
   );
 };

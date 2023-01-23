@@ -15,7 +15,7 @@ import useRust from 'my-rust-code'
 
 const Calculator = () => {
   const { rust, error } = useRust()
-  return <div>1+1={rust?.add(1,1))}</div>
+  return <div>1+1={rust?.add(1,1)}</div>
 }
 ```
 
