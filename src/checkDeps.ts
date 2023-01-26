@@ -25,6 +25,19 @@ const tryInstallRustup = async () => {
         [],
         { shell: true, stdio: "inherit" }
       );
+      const answer2 = await inquirer.prompt([
+        {
+          name: "runSource",
+          message: "Run: 'source \"$HOME/.cargo/env\"' (check the logging above)",
+          type: "confirm",
+        }]);
+      if (answer2["runSource"]) {
+        spawnSync(
+          "source \"$HOME/.cargo/env\"",
+          [],
+          { shell: true, stdio: "inherit" }
+        );
+      }
       return hasRustUp(); // might fail
     }
   }
