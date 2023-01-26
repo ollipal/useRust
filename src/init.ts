@@ -81,7 +81,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const packageJsonPath = path.join(process.cwd(), "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
-    console.log(`${useRustTag} package.json not detected ${chalk.red("✖")}`);
+    console.log(`${useRustTag} package.json not detected ${chalk.red("✕")}`);
     console.log(`${chalk.red("\n'userust init' should be used inside an existing project")}`);
     process.exit(1);
   } else {
@@ -98,7 +98,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const targetPath = path.join(process.cwd(), name);
 
   if (fs.existsSync(targetPath)) {
-    console.log(`${useRustTag} .${path.sep}${name} not available ${chalk.red("✖")}`);
+    console.log(`${useRustTag} .${path.sep}${name} not available ${chalk.red("✕")}`);
     console.log(`${chalk.red(`\nCannot init because '${targetPath}' already exists`)}`);
     process.exit(1);
   } else {

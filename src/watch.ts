@@ -30,7 +30,7 @@ const tryInstallCargoWatch = async () => {
 
 export const checkCargoWatch = async (verbose: boolean) => {
   if (!hasCargoWatch() && !(await tryInstallCargoWatch())) {
-    console.log(`${useRustTag} ${chalk.red("cargo-watch not detected ✖")}`);
+    console.log(`${useRustTag} ${chalk.red("cargo-watch not detected ✕")}`);
     console.log(`\ncargo-watch install instructions: ${chalk.bold.cyan("https://github.com/watchexec/cargo-watch")}`);
     return false;
   } else {

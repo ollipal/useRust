@@ -52,7 +52,7 @@ const tryInstallWasmPack = async () => {
 
 export const hasNecessaryDeps = async (verbose: boolean) => {
   if (!hasRustUp() && !(await tryInstallRustup())) {
-    console.log(`${useRustTag} ${chalk.red("rustup not detected ✖")}`);
+    console.log(`${useRustTag} ${chalk.red("rustup not detected ✕")}`);
     console.log(`\nrustup install instructions: ${chalk.bold.cyan("https://rustup.rs")}`);
     return false;
   } else {
@@ -60,7 +60,7 @@ export const hasNecessaryDeps = async (verbose: boolean) => {
   }
 
   if (!hasWasmPack() && !(await tryInstallWasmPack())) {
-    console.log(`${useRustTag} ${chalk.red("wasm-pack not detected ✖")}`);
+    console.log(`${useRustTag} ${chalk.red("wasm-pack not detected ✕")}`);
     console.log(`\nwasm-pack install instructions: ${chalk.bold.cyan("https://rustwasm.github.io/wasm-pack/installer")}`);
     return false;
   } else {

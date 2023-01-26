@@ -8,7 +8,7 @@ import { spawnSync } from "child_process";
 export const remove = async (name: string, { verbose, y }: {verbose: boolean, y: boolean}) => {
   name = toSafe(name);
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
-    console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
+    console.log(`${useRustTag} package.json detected ${chalk.red("✕")}`);
     console.log("\n'userust remove' should be used inside an existing project");
     process.exit(1);
   } else {
