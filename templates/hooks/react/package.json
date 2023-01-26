@@ -2,16 +2,16 @@
   "name": "template_name",
   "version": "0.1.0",
   "files": [
+    "wasm/*",
     "typeHelper.ts",
-    "index.js",
-    "index.d.ts"
+    "useRust.js",
+    "useRust.d.ts"
   ],
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "useRust.js",
+  "types": "useRust.d.ts",
   "sideEffects": false,
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "template_name_rust": "template_path_prefix:template_pkg_path"
+    "react-dom": "^18.2.0"
   }
 }

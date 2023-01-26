@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import chalk from "chalk";
-import { toSafe, useRustConfig, useRustTag } from "./common.js";
+import { toSafe, useRustTag, useRustVersion } from "./common.js";
 import { hasNecessaryDeps } from "./checkDeps.js";
 import { spawnSync } from "child_process";
 import { sync } from "command-exists";
@@ -57,8 +57,7 @@ export const watch = async (name: string, { verbose, clear, gitignore }: { verbo
     process.exit(1);
   }
 
-  const typeScript = useRustConfig(name).typeScript;
-  const watchCommand = `cargo watch ${clear ? "--clear" : ""} ${gitignore ? "" : "--no-gitignore"} --ignore pkg --shell 'wasm-pack build --target web ${!typeScript ? "--no-typescript " : " "}.'`;
+  const watchCommand = `cargo watch${clear ? " --clear" : ""}${gitignore ? "" : " --no-gitignore"} --watch ${targetPath} --workdir ${process.cwd()} --shell 'npx userust@${useRustVersion} build ${name}'`;
 
   console.log(`${useRustTag} Executing ${chalk.bold(watchCommand)}`);
   spawnSync(

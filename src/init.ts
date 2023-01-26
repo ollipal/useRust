@@ -181,8 +181,8 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   // Replace words from the copied template
   const wordsToReplace : {[key:string]: string} = {
     "template_name": name,
-    "template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`,
-    "template_path_prefix": frameworkAndPackageManager.packageManager === "npm" ? "file" : "link",
+    //"template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`,
+    //"template_path_prefix": frameworkAndPackageManager.packageManager === "npm" ? "file" : "link",
   };
 
   for (const p of copiedPaths) {
@@ -209,15 +209,6 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];
   const buildCommand = `npx userust build ${name}`;
   const watchCommand = `npx userust watch ${name}`;
-
-  if (frameworkAndPackageManager.packageManager === "pnpm") {
-    console.log(`${useRustTag} Executing ${chalk.bold("pnpm install")} at .${path.sep}${name} ...`);
-    spawnSync(
-      "pnpm install",
-      [],
-      { cwd: targetPath, shell: true, stdio: "inherit" }
-    );
-  }
 
   console.log(`${useRustTag} Executing ${chalk.bold(installCommand)}...`);
   spawnSync(

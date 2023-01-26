@@ -7,12 +7,12 @@ import { hasNecessaryDeps } from "./checkDeps.js";
 
 export const build = async (name: string) => {
   // Build
-  const shortGitignorePath = `.${path.sep}${path.join(name, "rust", "pkg", ".gitignore")}`;
-  const gitignorePath = path.join(process.cwd(), name, "rust", "pkg", ".gitignore");
+  const shortGitignorePath = `.${path.sep}${path.join(name, "wasm", ".gitignore")}`;
+  const shortPackageJsonPath = `.${path.sep}${path.join(name, "wasm", "package.json")}`;
 
   const { typeScript, gitignoreCompiled } = useRustConfig(name);
 
-  const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} .${path.sep}${path.join(name, "rust")}`;
+  const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} --out-dir ..${path.sep}${"wasm"} --out-name wasm .${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
   spawnSync(
     buildCommand,
@@ -24,9 +24,12 @@ export const build = async (name: string) => {
   if (gitignoreCompiled) {
     console.log(`${useRustTag} Keeping the default ${shortGitignorePath} with '*'`);
   } else {
-    console.log(`${useRustTag} Overwriting the default ${shortGitignorePath} from '*' to 'node_modules/'`);
-    fs.writeFileSync(gitignorePath, "node_modules/");
+    console.log(`${useRustTag} removing unnecessary ${shortGitignorePath}...'`);
+    fs.unlinkSync(shortGitignorePath);
   }
+
+  console.log(`${useRustTag} removing unnecessary ${shortPackageJsonPath}...`);
+  fs.unlinkSync(shortPackageJsonPath);
 
   // Success
   //console.log(chalk.green(`'${name}' built successfully ${chalk.green("✓")}`));

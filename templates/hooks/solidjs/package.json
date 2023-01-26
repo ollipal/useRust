@@ -2,15 +2,15 @@
   "name": "template_name",
   "version": "0.1.0",
   "files": [
+    "wasm/*",
     "typeHelper.ts",
-    "index.js",
-    "index.d.ts"
+    "useRust.js",
+    "useRust.d.ts"
   ],
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "useRust.js",
+  "types": "useRust.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "solid-js": "^1.6.2",
-    "template_name_rust": "file:template_pkg_path"
+    "solid-js": "^1.6.2"
   }
 }

@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import * as rustAll from "template_name_rust";
+import * as rustAll from "./wasm/wasm.js";
 
 // Get 'rustRest', which does not have default() and initSync()
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
