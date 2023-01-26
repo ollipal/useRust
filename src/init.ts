@@ -181,8 +181,6 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   // Replace words from the copied template
   const wordsToReplace : {[key:string]: string} = {
     "template_name": name,
-    //"template_pkg_path": `.${path.sep}${path.join("rust", "pkg")}`,
-    //"template_path_prefix": frameworkAndPackageManager.packageManager === "npm" ? "file" : "link",
   };
 
   for (const p of copiedPaths) {
