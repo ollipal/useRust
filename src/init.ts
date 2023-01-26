@@ -225,7 +225,7 @@ ${chalk.cyan.bold("Component example")}:
 ${ frameworkAndPackageManager.framework === "React"
     ? `import useRust from '${name}'
 
-const Calculator = () => {
+const App = () => {
   const { rust, error } = useRust()
 
   if (error) return <div>failed to load</div>
@@ -233,11 +233,11 @@ const Calculator = () => {
   return <div>1+1={rust.add(1,1)}</div>
 }
 
-export default Calculator`
+export default App`
     : `import useRust from '${name}'
 import { Show } from "solid-js";
 
-const Calculator = () => {
+const Counter = () => {
   const { rust, error } = useRust()
 
   return (
@@ -250,7 +250,7 @@ const Calculator = () => {
   );
 }
 
-export default Calculator`
+export default Counter`
 }
 
 ${chalk.cyan.bold("How to modify Rust")}:

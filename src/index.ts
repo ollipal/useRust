@@ -32,6 +32,7 @@ program
   .description("compile hook after every code change")
   .argument("<name>", "hook package name")
   .option("--clear", "clear the screen before each build")
+  .option("--no-poll", "don't use polling to detect changes")
   .option("--no-gitignore", "do not ignore .gitignored files")
   .option("--verbose", "log more information")
   .action(watch);

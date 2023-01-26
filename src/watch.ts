@@ -39,7 +39,7 @@ export const checkCargoWatch = async (verbose: boolean) => {
   }
 };
 
-export const watch = async (name: string, { verbose, clear, gitignore }: { verbose: boolean, clear: boolean, gitignore: boolean}) => {
+export const watch = async (name: string, { verbose, clear, poll, gitignore }: { verbose: boolean, clear: boolean, poll: boolean, gitignore: boolean}) => {
   name = toSafe(name);
   const targetPath = path.join(process.cwd(), name, "rust");
 
@@ -57,7 +57,7 @@ export const watch = async (name: string, { verbose, clear, gitignore }: { verbo
     process.exit(1);
   }
 
-  const watchCommand = `cargo watch${clear ? " --clear" : ""}${gitignore ? "" : " --no-gitignore"} --watch ${targetPath} --workdir ${process.cwd()} --shell 'npx userust@${useRustVersion} build ${name}'`;
+  const watchCommand = `cargo watch${clear ? " --clear" : ""}${poll ? " --poll" : ""}${gitignore ? "" : " --no-gitignore"} --watch ${targetPath} --workdir ${process.cwd()} --shell 'npx userust@${useRustVersion} build ${name}'`;
 
   console.log(`${useRustTag} Executing ${chalk.bold(watchCommand)}`);
   spawnSync(
