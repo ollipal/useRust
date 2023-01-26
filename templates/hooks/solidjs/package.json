@@ -2,7 +2,10 @@
   "name": "template_name",
   "version": "0.1.0",
   "files": [
-    "wasm/*",
+    "wasm/wasm_bg.wasm",
+    "wasm/wasm_bg.wasm.d.ts",
+    "wasm/wasm.d.ts",
+    "wasm/wasm.js",
     "typeHelper.ts",
     "useRust.js",
     "useRust.d.ts"
