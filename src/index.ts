@@ -2,7 +2,7 @@
 import { program } from "commander";
 import { init } from "./init.js";
 import { checkDepsAndBuild } from "./build.js";
-import { uninstall } from "./uninstall.js";
+import { remove } from "./remove.js";
 import { useRustVersion } from "./common.js";
 import { watch } from "./watch.js";
 
@@ -37,11 +37,11 @@ program
   .action(watch);
 
 program
-  .command("uninstall")
+  .command("remove")
   .description("remove installed useRust hook")
   .argument("<name>", "hook package name")
   .option("--verbose", "log more information")
   .option("-y", "yes to everything")
-  .action(uninstall);
+  .action(remove);
 
 program.parse();

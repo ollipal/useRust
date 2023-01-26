@@ -12,7 +12,7 @@ Commands:
 
 **watch**: compile hook after every code change
 
-**uninstall**: remove installed useRust hook
+**remove**: remove installed useRust hook
 
 ## API
 
@@ -35,16 +35,3 @@ const { rust, error, isLoading, init } = useRust({ autoInit })
 **init**: a promise function without parameters that should be used to initialize the useRust hook, if autoInit has been set to `false`
 
 **autoInit**: optional boolean, defaults to true. If true, the WebAssembly will start to initialize immediately after the component mounts. Value `false` with `init()` can be used to delay this initialization.
-
-## Known issues
-
-If you are using SolidJS and pnpm, you might need to add
-
-```js
-  optimizeDeps: {
-    exclude: ["<MY_NAME>_rust"]
-  },
-```
-where `<MY_NAME>` is the name of your useRust package, into your `vite.config.ts`.
-
-Otherwise the WebAssembly fails to load.

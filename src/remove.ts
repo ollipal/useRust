@@ -5,11 +5,11 @@ import { toSafe, useRustConfig, useRustTag } from "./common.js";
 import inquirer from "inquirer";
 import { spawnSync } from "child_process";
 
-export const uninstall = async (name: string, { verbose, y }: {verbose: boolean, y: boolean}) => {
+export const remove = async (name: string, { verbose, y }: {verbose: boolean, y: boolean}) => {
   name = toSafe(name);
   if (!fs.existsSync(path.join(process.cwd(), "package.json"))) {
     console.log(`${useRustTag} package.json detected ${chalk.red("✖")}`);
-    console.log("\n'userust uninstall' should be used inside an existing project");
+    console.log("\n'userust remove' should be used inside an existing project");
     process.exit(1);
   } else {
     if (verbose) console.log(`${useRustTag} package.json detected ${chalk.green("✓")}`);
