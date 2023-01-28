@@ -16,5 +16,5 @@ node ../../dist/index.js init my-rust -y
 yarn dev
 #
 cat package.json
-node ../../dist/index.js uninstall my-rust
+node ../../dist/index.js remove my-rust
 cat package.json

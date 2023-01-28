@@ -13,5 +13,5 @@ cp ../viteConfigs/viteConfigReact.ts ./vite.config.ts
 npm run dev
 #
 cat package.json
-node ../../dist/index.js uninstall my-rust
+node ../../dist/index.js remove my-rust
 cat package.json
