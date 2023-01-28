@@ -16,7 +16,7 @@ const tryInstallRustup = async () => {
     const answer = await inquirer.prompt([
       {
         name: "installRustup",
-        message: "Install rustup?",
+        message: "Try to install rustup automatically?",
         type: "confirm",
       }]);
     if (answer["installRustup"]) {

@@ -208,13 +208,17 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const buildCommand = `npx userust build ${name}`;
   const watchCommand = `npx userust watch ${name}`;
 
-  console.log(`${useRustTag} Executing ${chalk.bold(installCommand)}...`);
-  spawnSync(
-    installCommand,
-    [],
-    { shell: true, stdio: "inherit" }
-  );
-  console.log(`${useRustTag} ${name} useRust hook initialized succesfully ${chalk.green("✓")}`);
+  if (frameworkAndPackageManager.packageManager === "npm") {
+    if (verbose) console.log(`${useRustTag} npm, already installed`);
+  } else {
+    console.log(`${useRustTag} Executing ${chalk.bold(installCommand)}...`);
+    spawnSync(
+      installCommand,
+      [],
+      { shell: true, stdio: "inherit" }
+    );
+  }
+  console.log(`${useRustTag} ${name} useRust hook initialized succesfully ${chalk.green("✓")}`);  
 
 
   // TODO show install command if skipped

@@ -9,6 +9,7 @@ cd current-test
 npm install
 cp ../components/reactApp.tsx ./src/App.tsx
 node ../../dist/index.js init my-rust -y --verbose
+cp ../viteConfigs/viteConfigReact.ts ./vite.config.ts
 npm run dev
 #
 cat package.json

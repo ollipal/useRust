@@ -10,7 +10,7 @@ export const build = async (name: string) => {
   const shortGitignorePath = `.${path.sep}${path.join(name, "wasm", ".gitignore")}`;
   const shortPackageJsonPath = `.${path.sep}${path.join(name, "wasm", "package.json")}`;
 
-  const { typeScript, gitignoreCompiled } = useRustConfig(name);
+  const { typeScript, gitignoreCompiled, packageManager } = useRustConfig(name);
 
   const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} --out-dir ..${path.sep}${"wasm"} --out-name wasm .${path.sep}${path.join(name, "rust")}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
@@ -19,6 +19,25 @@ export const build = async (name: string) => {
     [],
     { shell: true, stdio: "inherit" }
   );
+
+  if (packageManager === "npm") {
+    const npmVersionPatchCommand = "npm version patch --git-tag-version false";
+    const cwd = `.${path.sep}${path.join(name)}`;
+    console.log(`${useRustTag} Executing ${chalk.bold(npmVersionPatchCommand)} at  ${cwd} (required if npm version 9+)...`);
+    spawnSync(
+      npmVersionPatchCommand,
+      [],
+      { cwd, shell: true, stdio: "inherit" }
+    );
+
+    const npmInstallCommand = `npm install .${path.sep}${name}`;
+    console.log(`${useRustTag} Executing ${chalk.bold(npmInstallCommand)} (required if npm version 9+)...`);
+    spawnSync(
+      npmInstallCommand,
+      [],
+      { shell: true, stdio: "inherit" }
+    );
+  }
 
   // Handle .gitignore
   if (gitignoreCompiled) {

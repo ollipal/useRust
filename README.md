@@ -39,6 +39,26 @@ Uses [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/) to compile WebAsse
 - Simple interface inspired by [SWR](https://swr.vercel.app/) library.
 
 [Full documentation](DOCUMENTATION.md)
+
+
+## Known issues with npm version 9
+
+If you use npm version 9, `userust build` might not get reflected on your frontend.
+
+If that is the case, remove `node_modules` and run `npm ci` to update
+
+If npm version 9 with Vite, you might also need to add
+
+```js
+  optimizeDeps: {
+    exclude: ["<MY_NAME>"]
+  },
+```
+where `<MY_NAME>` is the name of your useRust package, into your `vite.config.ts`.
+
+Otherwise the WebAssembly fails to load.
+
+
 ## Licence 
 
 The MIT License.
