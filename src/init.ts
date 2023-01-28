@@ -218,7 +218,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
       { shell: true, stdio: "inherit" }
     );
   }
-  console.log(`${useRustTag} ${name} useRust hook initialized succesfully ${chalk.green("✓")}`);  
+  console.log(`${useRustTag} ${chalk.green.bold(`${name} useRust hook initialized succesfully ✓`)}`);  
 
 
   // TODO show install command if skipped
@@ -263,6 +263,50 @@ Alternatively use ${chalk.bold(watchCommand)} to automatically recompile after R
 
 ${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
 ${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
+${fs.existsSync(filePath("vite.config.ts")) &&
+    (
+      frameworkAndPackageManager.framework === "React"
+        ? `
+${chalk.cyan.bold("Vite detected!")}
+Recommended vite.config.ts:
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  ${frameworkAndPackageManager.packageManager === "npm" && `// Fix page reloads after 'userust build/watch' during 'npm run dev'
+// More info: https://github.com/vitejs/vite/issues/8619
+  ${chalk.cyan( `server: {
+    watch: {
+      ignored: ["!**/node_modules/**"],
+    },
+  },`)}`}
+  // Serve .wasm files properly
+  ${chalk.cyan(`optimizeDeps: {
+    exclude: ["${name}"],
+  },`)}
+});
 `
-  );
+        : `
+${chalk.cyan.bold("Vite detected!")}
+Recommended vite.config.ts:
+
+import solid from "solid-start/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [solid()],
+  ${frameworkAndPackageManager.packageManager === "npm" && `// Fix page reloads after 'userust build/watch' during 'npm run dev'
+// More info: https://github.com/vitejs/vite/issues/8619
+  ${chalk.cyan( `server: {
+    watch: {
+      ignored: ["!**/node_modules/**"],
+    },
+  },`)}`}
+  // Serve .wasm files properly
+  ${chalk.cyan(`optimizeDeps: {
+    exclude: ["${name}"],
+  },`)}
+});`)}`);
 };

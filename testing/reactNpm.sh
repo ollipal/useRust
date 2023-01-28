@@ -4,6 +4,9 @@
 set -e
 
 rm -rf ./current-test
+cd ..
+npm run build
+cd testing
 npm create vite@latest current-test
 cd current-test
 npm install
