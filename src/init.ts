@@ -223,6 +223,26 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
 
   // TODO show install command if skipped
   console.log(`
+${chalk.yellow.bold("Instructions:")}
+
+${chalk.cyan.bold("How to modify Rust")}:
+1. Make changes at ${chalk.bold(rustSource)}
+2. Rebuild the hook with ${chalk.bold(buildCommand)}
+
+Alternatively use ${chalk.bold(watchCommand)} to automatically
+recompile after Rust changes
+
+After running ${chalk.bold("npm i userust --save-dev")} you can
+also add these command to your package.json:
+
+"scripts": {
+  ${chalk.cyan(`"build-${name}": "userust build ${name}",`)}
+  ${chalk.cyan(`"watch-${name}": "userust watch ${name}"`)}
+},
+
+${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
+${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
+
 ${chalk.cyan.bold("Component example")}:
 ${ frameworkAndPackageManager.framework === "React"
     ? `import useRust from '${name}'
@@ -252,17 +272,7 @@ const Counter = () => {
   );
 }
 
-export default Counter`
-}
-
-${chalk.cyan.bold("How to modify Rust")}:
-1. Make changes at ${chalk.bold(rustSource)}
-2. Rebuild the hook with ${chalk.bold(buildCommand)}
-
-Alternatively use ${chalk.bold(watchCommand)} to automatically recompile after Rust changes
-
-${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
-${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
+export default Counter`}
 ${fs.existsSync(filePath("vite.config.ts")) ?
     (
       frameworkAndPackageManager.framework === "React"
@@ -311,5 +321,6 @@ export default defineConfig({
 });`
     )
     : ""
-}`);
+}
+${chalk.yellow.bold("Check the instructions above!")}`);
 };
