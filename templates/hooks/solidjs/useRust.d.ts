@@ -1,8 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Accessor } from "solid-js";
-// @ts-ignore
-import type { InitInput, InitOutput, SyncInitInput } from "template_name_rust"
+import type { InitInput, InitOutput, SyncInitInput } from "./wasm/wasm"
 import rustRest from "./typeHelper";
 
 /**

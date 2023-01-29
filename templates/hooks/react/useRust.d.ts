@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// @ts-ignore
-import type { InitInput, InitOutput, SyncInitInput } from "template_name_rust"
+import type { InitInput, InitOutput, SyncInitInput } from "./wasm/wasm"
 import rustRest from "./typeHelper";
 
 /**
