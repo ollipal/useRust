@@ -35,3 +35,8 @@ const { rust, error, isLoading, init } = useRust({ autoInit })
 **init**: a promise function without parameters that should be used to initialize the useRust hook, if autoInit has been set to `false`
 
 **autoInit**: optional boolean, defaults to true. If true, the WebAssembly will start to initialize immediately after the component mounts. Value `false` with `init()` can be used to delay this initialization.
+
+## Known issues:
+
+- If problems with Apple M1 installing wasm-pack: [this](https://github.com/rustwasm/wasm-pack/issues/1098#issuecomment-1226387426) might be helpful
+- Yarn might have issues getting function type definitions, unknown reason so far
