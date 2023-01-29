@@ -196,7 +196,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
 
   await build(name);
 
-  const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
+  const rustSource = `.${path.sep}${path.join(name, "src", "lib.rs")}`;
 
   const installCommands : {[key:string]: string} = {
     "npm": `npm install .${path.sep}${path.join(name, "useRust")}`,
@@ -205,8 +205,6 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   };
 
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];
-  const buildCommand = `npx userust build ${name}`;
-  const watchCommand = `npx userust watch ${name}`;
 
   if (frameworkAndPackageManager.packageManager === "npm") {
     if (verbose) console.log(`${useRustTag} npm, already installed`);
@@ -218,8 +216,41 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
       { shell: true, stdio: "inherit" }
     );
   }
-  console.log(`${useRustTag} ${chalk.green.bold(`${name} useRust hook initialized succesfully ✓`)}`);  
 
+  const useRustInstallCommands : {[key:string]: string} = {
+    "npm": "npm install userust --save-dev",
+    "pnpm": "pnpm add userust --save-dev",
+    "yarn": "yarn add userust --dev",
+  };
+  const useRustInstallCommand = useRustInstallCommands[frameworkAndPackageManager.packageManager];
+  console.log(`${useRustTag} Executing ${chalk.bold(useRustInstallCommand)}...`);
+  spawnSync(
+    useRustInstallCommand,
+    [],
+    { shell: true, stdio: "inherit" }
+  );
+
+  console.log(`${useRustTag} Writing scripts to package.json...`);
+  const contents = JSON.parse(fs.readFileSync(filePath("package.json"), "utf8"));
+  if (!("scripts" in contents) || typeof contents["scripts"] !== "object") {
+    contents["scripts"] = {};
+  }
+  contents["scripts"][`build-${name}`] = `userust build ${name}`;
+  contents["scripts"][`watch-${name}`] = `userust watch ${name}`;
+  fs.writeFileSync(filePath("package.json"), JSON.stringify(contents, null, 2));
+
+  const buildCommands : {[key:string]: string} = {
+    "npm": `npm run build-${name}`,
+    "pnpm": `pnpm run build-${name}`,
+    "yarn": `yarn build-${name}`,
+  };
+  const watchCommands : {[key:string]: string} = {
+    "npm": `npm run watch-${name}`,
+    "pnpm": `pnpm run watch-${name}`,
+    "yarn": `yarn watch-${name}`,
+  };
+
+  console.log(`${useRustTag} ${chalk.green.bold(`${name} useRust hook initialized succesfully ✓`)}`);  
 
   // TODO show install command if skipped
   console.log(`
@@ -227,20 +258,11 @@ ${chalk.yellow.bold("Instructions:")}
 
 ${chalk.cyan.bold("How to modify Rust")}:
 1. Make changes at ${chalk.bold(rustSource)}
-2. Rebuild the hook with ${chalk.bold(buildCommand)}
+2. Rebuild the hook with ${chalk.bold(buildCommands[frameworkAndPackageManager.packageManager])}
 
-Alternatively use ${chalk.bold(watchCommand)} to automatically
+Alternatively use ${chalk.bold(watchCommands[frameworkAndPackageManager.packageManager])} to automatically
 recompile after Rust changes
 
-After running ${chalk.bold("npm i userust --save-dev")} you can
-also add these command to your package.json:
-
-"scripts": {
-  ${chalk.cyan(`"build-${name}": "userust build ${name}",`)}
-  ${chalk.cyan(`"watch-${name}": "userust watch ${name}"`)}
-},
-
-${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
 ${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
 
 ${chalk.cyan.bold("Component example")}:
