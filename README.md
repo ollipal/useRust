@@ -24,9 +24,9 @@ const Calculator = () => {
 1. Have an existing React or SolidJS project
 2. `npx userust init NAME` will compile and install a custom useRust hook to your project
 3. Make changes to `./NAME/src/lib.rs`
-4. `npm run build-NAME` will recompile the `useRust`-hook
+4. `npm run NAME:build` will recompile the `useRust`-hook
 
-Alternatively you can use `npm run watch-NAME` to automatically recompile after changes to Rust code
+Alternatively you can use `npm run NAME:watch` to automatically recompile after changes to Rust code
 
 Uses [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). See Rust code examples at its [documentation page](https://rustwasm.github.io/wasm-bindgen/).
 

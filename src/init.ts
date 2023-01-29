@@ -235,19 +235,19 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   if (!("scripts" in contents) || typeof contents["scripts"] !== "object") {
     contents["scripts"] = {};
   }
-  contents["scripts"][`build-${name}`] = `userust build ${name}`;
-  contents["scripts"][`watch-${name}`] = `userust watch ${name}`;
+  contents["scripts"][`${name}:build`] = `userust build ${name}`;
+  contents["scripts"][`${name}:watch`] = `userust watch ${name}`;
   fs.writeFileSync(filePath("package.json"), JSON.stringify(contents, null, 2));
 
   const buildCommands : {[key:string]: string} = {
-    "npm": `npm run build-${name}`,
-    "pnpm": `pnpm run build-${name}`,
-    "yarn": `yarn build-${name}`,
+    "npm": `npm run ${name}:build`,
+    "pnpm": `pnpm run ${name}:build`,
+    "yarn": `yarn ${name}:build`,
   };
   const watchCommands : {[key:string]: string} = {
-    "npm": `npm run watch-${name}`,
-    "pnpm": `pnpm run watch-${name}`,
-    "yarn": `yarn watch-${name}`,
+    "npm": `npm run ${name}:watch`,
+    "pnpm": `pnpm run ${name}:watch`,
+    "yarn": `yarn ${name}:watch`,
   };
 
   console.log(`${useRustTag} ${chalk.green.bold(`${name} useRust hook initialized succesfully ✓`)}`);  
