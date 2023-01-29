@@ -34,17 +34,13 @@ Uses [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). See Rust code exa
 
 - Leverage Rust and Wasm to speed up critical parts of your frontend
 - Fully typed TypeScript interface, works in JavaScript projects as well
-- No limitatoions for Rust code, provides a minimal, properly configured boilerplate to start with
+- No limitations for Rust code, provides a minimal, properly configured boilerplate to start with
+- Develop frontend and Rust code from the same monorepo with a few simple commands
+- Tested on Linux, MacOS and Windows
+- npm, pnpm and yarn supported
 - Simple interface inspired by [SWR](https://swr.vercel.app/) library
-- Develope frontend and Rust code from the same monorepo with a few simple commands
-- Tested on Linux, MacOS and Windows. npm, pnpm and yarn supported
 
 [Full documentation](DOCUMENTATION.md)
-
-## Hot Module Replacement (HMR)
-
-- HMR works well, if [Vite](https://vitejs.dev/) is used, if configured according to the instructions given during `npx userust init`
-- [NextJS]'s `npm run dev` and [Create React App]()'s `npm start` do not refresh correctly after `userust build/watch`, and might need a restart
 
 ## Licence 
 

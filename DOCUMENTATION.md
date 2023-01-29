@@ -36,6 +36,11 @@ const { rust, error, isLoading, init } = useRust({ autoInit })
 
 **autoInit**: optional boolean, defaults to true. If true, the WebAssembly will start to initialize immediately after the component mounts. Value `false` with `init()` can be used to delay this initialization.
 
+## Hot Module Replacement (HMR)
+
+- HMR works well, if [Vite](https://vitejs.dev/) is used and configured according to the instructions given during `npx userust init`
+- [NextJS](https://nextjs.org/)'s `npm run dev` and [Create React App]()'s `npm start` do not refresh correctly after `userust build`, and might need a restart after each recompilation
+
 ## Known issues:
 
 - If problems with Apple M1 installing wasm-pack: [this](https://github.com/rustwasm/wasm-pack/issues/1098#issuecomment-1226387426) might be helpful
