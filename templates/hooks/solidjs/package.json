@@ -10,6 +10,7 @@
     "useRust.js",
     "useRust.d.ts"
   ],
+  "type": "module",
   "module": "useRust.js",
   "types": "useRust.d.ts",
   "sideEffects": false,
