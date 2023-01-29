@@ -7,12 +7,12 @@ import { hasNecessaryDeps } from "./checkDeps.js";
 
 export const build = async (name: string) => {
   // Build
-  const shortGitignorePath = `.${path.sep}${path.join(name, "wasm", ".gitignore")}`;
-  const shortPackageJsonPath = `.${path.sep}${path.join(name, "wasm", "package.json")}`;
+  const shortGitignorePath = `.${path.sep}${path.join(name, "useRust", "wasm", ".gitignore")}`;
+  const shortPackageJsonPath = `.${path.sep}${path.join(name, "useRust", "wasm", "package.json")}`;
 
   const { typeScript, gitignoreCompiled, packageManager } = useRustConfig(name);
 
-  const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} --out-dir ..${path.sep}${"wasm"} --out-name wasm .${path.sep}${path.join(name, "rust")}`;
+  const buildCommand = `wasm-pack build --target web${!typeScript ? " --no-typescript" : ""} --out-dir .${path.sep}${path.join("useRust", "wasm")} --out-name wasm .${path.sep}${name}`;
   console.log(`${useRustTag} Executing ${chalk.bold(buildCommand)}...`);
   spawnSync(
     buildCommand,
@@ -22,7 +22,7 @@ export const build = async (name: string) => {
 
   if (packageManager === "npm") {
     const npmVersionPatchCommand = "npm version patch --git-tag-version false";
-    const cwd = `.${path.sep}${path.join(name)}`;
+    const cwd = `.${path.sep}${path.join(name, "useRust")}`;
     console.log(`${useRustTag} Executing ${chalk.bold(npmVersionPatchCommand)} at  ${cwd} (required if npm version 9+)...`);
     spawnSync(
       npmVersionPatchCommand,
@@ -30,7 +30,7 @@ export const build = async (name: string) => {
       { cwd, shell: true, stdio: "inherit" }
     );
 
-    const npmInstallCommand = `npm install .${path.sep}${name}`;
+    const npmInstallCommand = `npm install .${path.sep}${path.join(name, "useRust")}`;
     console.log(`${useRustTag} Executing ${chalk.bold(npmInstallCommand)} (required if npm version 9+)...`);
     spawnSync(
       npmInstallCommand,
@@ -56,7 +56,7 @@ export const build = async (name: string) => {
 
 export const checkDepsAndBuild = async (name: string, { verbose }: { verbose: boolean}) => {
   name = toSafe(name);
-  const targetPath = path.join(process.cwd(), name, "rust");
+  const targetPath = path.join(process.cwd(), name);
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {

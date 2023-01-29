@@ -3,6 +3,7 @@
 Add custom Rust WebAssembly hooks for React and SolidJS projects
 
 ```rust
+#[wasm_bindgen]
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }

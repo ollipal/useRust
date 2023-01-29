@@ -92,7 +92,7 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
     process.exit(1);
   }
 
-  const commonPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "common");
+  const rustPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "rust");
   const reactPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "react");
   const solidjsPath = path.join(fileURLToPath(import.meta.url), "..", "..", "templates", "hooks", "solidjs");
   const targetPath = path.join(process.cwd(), name);
@@ -172,11 +172,11 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
     copiedPaths.push(dest);
     return true;
   };
-  await fs.copy(commonPath, targetPath, { overwrite: false, errorOnExist: true, filter });
-  await fs.copy(hookPath, targetPath, { overwrite: false, errorOnExist: true, filter });
+  await fs.copy(rustPath, targetPath, { overwrite: false, errorOnExist: true, filter });
+  await fs.copy(hookPath, path.join(targetPath, "useRust"), { overwrite: false, errorOnExist: true, filter });
 
   const useRustConfig = {useRustVersion, ...frameworkAndPackageManager, gitignoreCompiled: gitignoreCompiled === "Yes" , typeScript: typescript};
-  fs.writeFileSync(path.join(targetPath, "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
+  fs.writeFileSync(path.join(targetPath, "useRust", "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template
   const wordsToReplace : {[key:string]: string} = {
@@ -199,9 +199,9 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const rustSource = `.${path.sep}${path.join(name, "rust", "src", "lib.rs")}`;
 
   const installCommands : {[key:string]: string} = {
-    "npm": `npm install .${path.sep}${name}`,
-    "pnpm": `pnpm add .${path.sep}${name}`,
-    "yarn": `yarn add ${name}@portal:.${path.sep}${name}`,
+    "npm": `npm install .${path.sep}${path.join(name, "useRust")}`,
+    "pnpm": `pnpm add .${path.sep}${path.join(name, "useRust")}`,
+    "yarn": `yarn add ${name}@portal:.${path.sep}${path.join(name, "useRust")}`,
   };
 
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];

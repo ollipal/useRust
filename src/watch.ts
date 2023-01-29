@@ -42,7 +42,8 @@ export const checkCargoWatch = async (verbose: boolean) => {
 
 export const watch = async (name: string, { verbose, clear, poll, gitignore }: { verbose: boolean, clear: boolean, poll: boolean, gitignore: boolean}) => {
   name = toSafe(name);
-  const targetPath = path.join(process.cwd(), name, "rust");
+  const targetPath = path.join(process.cwd(), name);
+  const ignorePath = path.join(process.cwd(), name, "useRust");
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {
@@ -58,7 +59,7 @@ export const watch = async (name: string, { verbose, clear, poll, gitignore }: {
     process.exit(1);
   }
 
-  const watchCommand = `cargo watch${clear ? " --clear" : ""}${poll ? " --poll" : ""}${gitignore ? "" : " --no-gitignore"} --watch "${targetPath}" --workdir "${process.cwd()}" --shell "node ${path.join(fileURLToPath(import.meta.url), "..", "index.js")} build ${name}"`;
+  const watchCommand = `cargo watch${clear ? " --clear" : ""}${poll ? " --poll" : ""}${gitignore ? "" : " --no-gitignore"} --watch "${targetPath}" --ignore "${ignorePath}" --workdir "${process.cwd()}" --shell "node ${path.join(fileURLToPath(import.meta.url), "..", "index.js")} build ${name}"`;
 
   console.log(`${useRustTag} Executing ${chalk.bold(watchCommand)}`);
   spawnSync(
