@@ -245,7 +245,8 @@ ${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/exam
 
 ${chalk.cyan.bold("Component example")}:
 ${ frameworkAndPackageManager.framework === "React"
-    ? `import useRust from '${name}'
+    ? `import React from 'react'
+import useRust from '${name}'
 
 const App = () => {
   const { rust, error } = useRust()

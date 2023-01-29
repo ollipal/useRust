@@ -1,3 +1,4 @@
+import React from "react";
 import useRust from "my-rust";
 
 function App() {
