@@ -16,12 +16,12 @@ Commands:
 
 ## API
 
-Create `useRust` hook by running `npx userust init <MY_NAME>`.
+Create `useRust` hook by running `npx userust init NAME`.
 
 After that, the `useRust` will be available:
 
 ```js
-import useRust from '<MY_NAME>'
+import useRust from 'NAME'
 //
 const { rust, error, isLoading, init } = useRust({ autoInit })
 ```

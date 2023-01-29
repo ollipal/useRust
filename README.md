@@ -1,6 +1,6 @@
 # useRust
 
-Add custom Rust WebAssembly hooks for React to SolidJS projects
+Add custom Rust WebAssembly hooks to React and SolidJS projects
 
 ```rust
 // my-rust-code/src/lib.rs
@@ -22,11 +22,11 @@ const Calculator = () => {
 ## How it works
 
 1. Have an existing React or SolidJS project
-2. `npx userust init <MY_NAME>` will compile and install a custom useRust hook to your project
-3. Make changes to `./<MY_NAME>/src/lib.rs`
-4. `npm run build-<MY_NAME>` will recompile the `useRust`-hook
+2. `npx userust init NAME` will compile and install a custom useRust hook to your project
+3. Make changes to `./NAME/src/lib.rs`
+4. `npm run build-NAME` will recompile the `useRust`-hook
 
-Alternatively you can use `npm run watch-<MY_NAME>` to automatically recompile after changes to Rust code
+Alternatively you can use `npm run watch-NAME` to automatically recompile after changes to Rust code
 
 Uses [wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/). See Rust code examples at its [documentation page](https://rustwasm.github.io/wasm-bindgen/).
 
