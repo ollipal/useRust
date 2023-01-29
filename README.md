@@ -23,8 +23,9 @@ const Calculator = () => {
 
 1. Have an existing React or SolidJS project
 2. `npx userust init NAME` will compile and install a custom useRust hook to your project
-3. Make changes to `./NAME/src/lib.rs`
-4. `npm run NAME:build` will recompile the `useRust`-hook
+3. Use it in your project `import useRust from 'NAME'` 
+4. Make changes to `./NAME/src/lib.rs`
+5. `npm run NAME:build` will recompile the useRust hook
 
 Alternatively you can use `npm run NAME:watch` to automatically recompile after changes to Rust code
 
