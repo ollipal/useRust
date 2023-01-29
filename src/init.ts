@@ -263,7 +263,7 @@ Alternatively use ${chalk.bold(watchCommand)} to automatically recompile after R
 
 ${chalk.cyan("useRust docs")}: https://github.com/ollipal/useRust
 ${chalk.cyan("wasm-bindgen docs")}: https://rustwasm.github.io/wasm-bindgen/examples/index.html
-${fs.existsSync(filePath("vite.config.ts")) &&
+${fs.existsSync(filePath("vite.config.ts")) ?
     (
       frameworkAndPackageManager.framework === "React"
         ? `
@@ -308,5 +308,8 @@ export default defineConfig({
   ${chalk.cyan(`optimizeDeps: {
     exclude: ["${name}"],
   },`)}
-});`)}`);
+});`
+    )
+    : ""
+}`);
 };
