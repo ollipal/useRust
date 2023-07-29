@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, batch } from "solid-js";
 import * as rustAll from "./wasm/wasm.js";
 
 // Get 'rustRest', which does not have default() and initSync()
@@ -17,14 +17,18 @@ const useRust = (config = { autoInit: true }) => {
     try {
       returnValue = await rustAll.default();
     } catch (e) {
-      setRust(undefined);
-      setError(e);
-      setIsLoading(false);
+      batch(() => {
+        setRust(undefined);
+        setError(e);
+        setIsLoading(false);
+      });
       return;
     }
-    setRust(rustRest);
-    setError(undefined);
-    setIsLoading(false);
+    batch(() => {
+      setRust(rustRest);
+      setError(undefined);
+      setIsLoading(false);
+    });
     return returnValue;
   };
 
