@@ -1,6 +1,6 @@
 {
   "name": "userust",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "Custom Rust WebAssembly hooks for React and SolidJS projects",
   "type": "module",
   "bin": "dist/index.js",

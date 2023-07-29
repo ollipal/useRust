@@ -173,10 +173,10 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
     return true;
   };
   await fs.copy(rustPath, targetPath, { overwrite: false, errorOnExist: true, filter });
-  await fs.copy(hookPath, path.join(targetPath, "useRust"), { overwrite: false, errorOnExist: true, filter });
+  await fs.copy(hookPath, path.join(targetPath, ".useRust"), { overwrite: false, errorOnExist: true, filter });
 
   const useRustConfig = {useRustVersion, ...frameworkAndPackageManager, gitignoreCompiled: gitignoreCompiled === "Yes" , typeScript: typescript};
-  fs.writeFileSync(path.join(targetPath, "useRust", "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
+  fs.writeFileSync(path.join(targetPath, ".useRust", "useRustConfig.json"), JSON.stringify(useRustConfig, null, 2));
 
   // Replace words from the copied template
   const wordsToReplace : {[key:string]: string} = {
@@ -199,9 +199,9 @@ export const init = async (name: string, { typescript, verbose, y }: {typescript
   const rustSource = `.${path.sep}${path.join(name, "src", "lib.rs")}`;
 
   const installCommands : {[key:string]: string} = {
-    "npm": `npm install .${path.sep}${path.join(name, "useRust")}`,
-    "pnpm": `pnpm add .${path.sep}${path.join(name, "useRust")}`,
-    "yarn": `yarn add ${name}@portal:.${path.sep}${path.join(name, "useRust")}`,
+    "npm": `npm install .${path.sep}${path.join(name, ".useRust")}`,
+    "pnpm": `pnpm add .${path.sep}${path.join(name, ".useRust")}`,
+    "yarn": `yarn add ${name}@portal:.${path.sep}${path.join(name, ".useRust")}`,
   };
 
   const installCommand = installCommands[frameworkAndPackageManager.packageManager];

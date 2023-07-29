@@ -43,7 +43,7 @@ export const checkCargoWatch = async (verbose: boolean) => {
 export const watch = async (name: string, { verbose, clear, poll, gitignore }: { verbose: boolean, clear: boolean, poll: boolean, gitignore: boolean}) => {
   name = toSafe(name);
   const targetPath = path.join(process.cwd(), name);
-  const ignorePath = path.join(process.cwd(), name, "useRust");
+  const ignorePath = path.join(process.cwd(), name, ".useRust");
 
   // Make sure dir exists
   if (!fs.existsSync(targetPath) || !fs.lstatSync(targetPath).isDirectory()) {
